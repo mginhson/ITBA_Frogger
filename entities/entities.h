@@ -1,4 +1,7 @@
+
+
+
 typedef struct {
     char is_animating;
-    assets_t * animattion_frame;
+    assets_t * animation_frame;
 } animation_t;

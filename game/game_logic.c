@@ -14,5 +14,5 @@ static void updateMap(void);
 
 void gameTick(uint32_t ms_since_last_tick)
 {
-        
+    
 }
