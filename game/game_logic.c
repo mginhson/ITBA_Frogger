@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "game_logic.h"
-
+#include "../entities/entities.h"
 
 
 
@@ -14,5 +14,5 @@ static void updateMap(void);
 
 void gameTick(uint32_t ms_since_last_tick)
 {
-    
+
 }
