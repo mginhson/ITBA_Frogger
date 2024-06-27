@@ -31,10 +31,11 @@ typedef struct{
 
 
 typedef struct{
-    
     uint32_t position;
     animation_t animation;
 }object_t;
+
+
 
 typedef enum{
     water,
@@ -43,13 +44,18 @@ typedef enum{
 }background_t;
 
 typedef struct{
+    uint32_t ms_to_move;
+    uint32_t ms_reload;
     background_t background;
-    object_kind_t * kind;
+    const object_kind_t * kind;
     object_t objects[MAX_OBJECTS_PER_LANE];
 }lane_t;
 
 typedef struct{
     lane_t lanes[LANES_COUNT];
 }map_t;
+
+
+int32_t fillMap(map_t *_map,uint32_t _level);
 
 #endif
