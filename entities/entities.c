@@ -37,6 +37,7 @@ static const object_kind_t big_log_object_kind = {
                 {.position=LANE_X_PIXELS/2},
             }
         },
+         
     };
 
     static const lane_t water_arquetypes[] = {

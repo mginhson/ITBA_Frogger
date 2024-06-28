@@ -97,28 +97,54 @@ void gameTick(uint32_t ms_since_last_tick)
 static void triggerRanitaMovement(ranita_logic_direction_t _direction)
 {
     //REMEMBER that the position is relative to the upper left corner
-    static const int32_t vertical_offset = LANE_Y_PIXELS / LANES_COUNT; //How much should the ranita move vertically 
     int32_t temp;
     switch(_direction)
     {
         case RANITA_DOWN:
-            temp = ranita.y_position - vertical_offset;
-            
+            temp = ranita.y_position - ranita.hitbox_height; //y position of the bottom
+            if (temp - ranita.hitbox_height < 0) //would go below map, set is as low as possible
+            {
+                ranita.y_position = ranita.hitbox_height; //lowest pixel for the upper left corner
+            }
+            else
+            {
+                ranita.y_position -= ranita.hitbox_height;
+            }
             break;
 
 
         case RANITA_UP:
             
+            if ((ranita.y_position + ranita.hitbox_height) >= LANE_Y_PIXELS) //would go above map
+            {
+                ranita.y_position = LANE_Y_PIXELS - 1;//uppermost pixel for the upper left corner
+            }
+            else
+            {
+                ranita.y_position += ranita.hitbox_height;
+            }
+
             break;
 
 
         case RANITA_LEFT:
-
+            if ((ranita.values.position - ranita.params.hitbox_width) < 0) //would go left from mapside
+            {
+                ranita.values.position = 0; //leftmost pixel for the upper left corner
+            }
+            else
+            {
+                ranita.values.position -= ranita.params.hitbox_width;
+            }
             break;
 
 
         case RANITA_RIGHT:
-
+            temp = ranita.values.position + ranita.params.hitbox_width; //right corner uppermost pixel
+            if((temp + ranita.params.hitbox_width) >= LANE_X_PIXELS) //would go right from mapside
+            {
+                ranita.values.position = LANE_X_PIXELS - 1;
+            }
             break;
 
         default:
