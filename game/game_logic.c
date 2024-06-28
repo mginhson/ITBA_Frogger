@@ -9,6 +9,9 @@
 
 static void updateMap(void);
 static void generateNewLevel(uint32_t _level);
+static void collisionAnalysis(void);
+static void winAnalysis(void);
+
 
 typedef enum{RANITA_UP,RANITA_DOWN,RANITA_LEFT,RANITA_RIGHT}ranita_logic_direction_t;
 static void triggerRanitaMovement(ranita_logic_direction_t _direction);
@@ -25,7 +28,7 @@ independent_object_t ranita = {
         .hitbox_width = LANE_X_PIXELS/12,
         .attr = {.canKill=0, .canMove=1, .isEquippable=0},
     }, .hitbox_height = LANE_PIXEL_HEIGHT,
-
+    .y_position = LANE_PIXEL_HEIGHT,
     
     
 };
@@ -89,8 +92,8 @@ void gameTick(uint32_t ms_since_last_tick)
         }
     }
 
-    //Now we move on to the ranita <3
-
+    //Now we move onto the ranita <3
+    
     
 }
 
@@ -153,11 +156,41 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
     }
 }
 
+/*
+    @BRIEF: collisionAnalysis
+        Checks if the ranita collided with something that could kill her 
+*/
+static void collisionAnalysis(void)
+{
+    uint32_t i,j;
+    puts("starting collision analysis");
+    printf("ranita.y_position = %d\nranita.hitbox_height = %d\n\n",ranita.y_position,ranita.hitbox_height);
+    for(i=0;i<lane_bound;i++)
+    {
+        //First,analyze if the ranita is on the y coordinate capable of interacting with the lane
+        
+        if  ((ranita.y_position > LANE_PIXEL_HEIGHT * i\
+            && ranita.y_position < LANE_PIXEL_HEIGHT*(i+1))\
+            ||
+            ((ranita.y_position-ranita.hitbox_height) > LANE_PIXEL_HEIGHT * i\
+            && (ranita.y_position-ranita.hitbox_height) < LANE_PIXEL_HEIGHT*(i+1)))
+        {
+            printf("The ranita is in range!\n");
+            
+            for(j=0;j<object_bound;j++)
+            {
+                
+            }
+        }
+        
+    }
+}
 void initializeGameLogic(void)
 {
     srand(time(NULL));
     level = 0;
     fillMap(&map,level);
+    collisionAnalysis();
     printf("lane bound = %d\n",lane_bound);
 }
 

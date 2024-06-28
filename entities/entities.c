@@ -11,7 +11,7 @@ static const object_kind_t bus_object_kind = {
 };
 
 static const object_kind_t small_log_object_kind={
-
+    
 };
 
 static const object_kind_t normal_log_object_kind = {
