@@ -35,7 +35,10 @@ typedef struct{
     animation_t animation;
 }object_t;
 
-
+typedef struct{
+    object_kind_t params;
+    object_t values;
+}independent_object_t;
 
 typedef enum{
     water,
@@ -44,10 +47,11 @@ typedef enum{
 }background_t;
 
 typedef struct{
-    uint32_t ms_to_move;
-    uint32_t ms_reload;
+    int32_t ms_to_next;
+    int32_t ms_reload;
     background_t background;
     const object_kind_t * kind;
+    const uint32_t virtual_lane_length;
     object_t objects[MAX_OBJECTS_PER_LANE];
 }lane_t;
 

@@ -8,16 +8,13 @@ const object_kind_t bus_object = {
     .attr = {.canKill = 1, .isEquippable = 0},
 };
 
-const object_kind_t ranita = {
-    .hitbox_width = LANE_X_PIXELS/16,
-    .attr = {.canKill=0, .canMove=1, .isEquippable=0},
-    
-};
+
 
 const lane_t road_arquetype[] = 
 {
     [0]=
     {
+        
         .kind = &bus_object,
         .background = road,
         .objects =

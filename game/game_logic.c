@@ -18,10 +18,7 @@ static const uint32_t lane_bound = sizeof(map.lanes)/sizeof(map.lanes[0]);
 
 
 
-static struct{
-    object_t obj;
-    const object_kind_t params;
-}ranita = {
+independent_object_t ranita = {
     .params = {
         .hitbox_width = LANE_X_PIXELS/16,
         .attr = {.canKill=0, .canMove=1, .isEquippable=0},
@@ -33,11 +30,19 @@ static struct{
     -Check if the ranita moved  
     
 */
-
 void gameTick(uint32_t ms_since_last_tick)
 {
     uint32_t i=0;
-    
+
+    for(i=0; i < lane_bound; i++)
+    {
+        map.lanes[i].ms_to_next -= ms_since_last_tick;
+
+        if(map.lanes[i].ms_to_next <= 0) //Lane should move a pixel
+        {
+            
+        }
+    }
 }
 
 void initializeGameLogic(void)
