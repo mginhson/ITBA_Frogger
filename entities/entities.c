@@ -5,20 +5,20 @@
 
 
 
-static const object_kind_t bus_object_kind = {
+const object_kind_t bus_object_kind = {
     .hitbox_width=LANE_X_PIXELS / 16,
     .attr = {.canKill = 1, .isEquippable = 0},
 };
 
-static const object_kind_t small_log_object_kind={
+const object_kind_t small_log_object_kind={
     
 };
 
-static const object_kind_t normal_log_object_kind = {
+const object_kind_t normal_log_object_kind = {
 
 };
 
-static const object_kind_t big_log_object_kind = {
+const object_kind_t big_log_object_kind = {
 
 };
 
@@ -106,6 +106,7 @@ int32_t fillMap(map_t *_map, uint32_t _level)
     //Difficulty can be fine tuned here, by choosing harder arquetypes and modifying the .ms_reload
     for (i=0; i < lane_bound; i++)
     {
+
         switch(i)
         {
             case 0: //finish line
@@ -144,8 +145,9 @@ int32_t fillMap(map_t *_map, uint32_t _level)
                 _map->lanes[i] = grass_arquetypes[rand() % grass_arquetypes_elements];
                 break;
         }
+        _map->lanes[i].ms_to_next=10;
     }
-    //printMap(_map);
+    printMap(_map);
     return 0;
 }
 

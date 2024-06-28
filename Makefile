@@ -1,6 +1,6 @@
 CC := gcc
 CFLAGS := -Wall
-DEFINE_ARGS := -D PC
+DEFINE_ARGS := #-D PC
 EXEC_NAME := frogger
 MODULES := game_logic.o frogger.o entities.o
 

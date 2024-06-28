@@ -23,7 +23,10 @@ typedef struct{
     uint32_t canMove :1;
 }object_attributes_t;
 
+
+
 typedef struct{
+
     const object_graphics_t graphics;
     const object_attributes_t attr;
     const uint32_t hitbox_width; //From left side, should correspond with graphics width!!!
@@ -65,6 +68,8 @@ typedef struct{
     lane_t lanes[LANES_COUNT];
 }map_t;
 
+
+extern const object_kind_t bus_object_kind;
 
 int32_t fillMap(map_t *_map,uint32_t _level);
 void printMap(map_t *_map);

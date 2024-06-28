@@ -9,7 +9,7 @@
 
 static void updateMap(void);
 static void generateNewLevel(uint32_t _level);
-static void collisionAnalysis(void);
+static const object_kind_t * collisionAnalysis(void);
 static void winAnalysis(void);
 
 
@@ -17,7 +17,10 @@ typedef enum{RANITA_UP,RANITA_DOWN,RANITA_LEFT,RANITA_RIGHT}ranita_logic_directi
 static void triggerRanitaMovement(ranita_logic_direction_t _direction);
 
 
-static map_t map;
+static map_t map = 
+{
+    
+};
 static uint32_t level;
 static const uint32_t lane_bound = sizeof(map.lanes)/sizeof(map.lanes[0]);
 static const uint32_t object_bound = sizeof(map.lanes[0].objects)/sizeof(map.lanes[0].objects[0]);
@@ -28,7 +31,7 @@ independent_object_t ranita = {
         .hitbox_width = LANE_X_PIXELS/12,
         .attr = {.canKill=0, .canMove=1, .isEquippable=0},
     }, .hitbox_height = LANE_PIXEL_HEIGHT,
-    .y_position = LANE_Y_PIXELS-1+LANE_PIXEL_HEIGHT-1,
+    .y_position = LANE_Y_PIXELS-1,
     
     
 };
@@ -37,6 +40,7 @@ independent_object_t ranita = {
     @BRIEF: gameTick
     -Check if the ranita moved  
     -Update the objects on the map
+    -Check for the interactions between the map and the ranita
 */
 void gameTick(uint32_t ms_since_last_tick)
 {
@@ -93,7 +97,12 @@ void gameTick(uint32_t ms_since_last_tick)
     }
 
     //Now we move onto the ranita <3
-    
+    const object_kind_t * collision = collisionAnalysis();
+    printf("collision = %p\n",collision);
+    if (collision == &bus_object_kind)
+    {
+        printf("Collided with a bus!\n");
+    }
     
 }
 
@@ -159,30 +168,30 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
 /*
     @BRIEF: collisionAnalysis
         Checks if the ranita collided with something that could kill her
-        end_y->|------|
-                 |      |
+        end_y----->|------|
+                   |      |
         start_y--->|------|
         start_x->       <--end_x 
 */
-static void collisionAnalysis(void)
+static const object_kind_t * collisionAnalysis(void)
 {
     int32_t i,j,start_object_x,end_object_x,start_ranita_x,end_ranita_x,start_ranita_y,end_ranita_y;
     int32_t start_lane_y,end_lane_y;
     puts("starting collision analysis");
-    //printf("ranita.y_position = %d\nranita.hitbox_height = %d\nranita.position = %d\nranita.params.hitbox_width=%d\n",ranita.y_position,ranita.hitbox_height,ranita.values.position,ranita.params.hitbox_width);
+    printf("ranita.y_position = %d\nranita.hitbox_height = %d\nranita.position = %d\nranita.params.hitbox_width=%d\n",ranita.y_position,ranita.hitbox_height,ranita.values.position,ranita.params.hitbox_width);
     
     start_ranita_y = ranita.y_position - ranita.hitbox_height + 1;//Porque ranita.y_position ya tienen en cuenta el primer pixel
     end_ranita_y = ranita.y_position; 
     start_ranita_x = ranita.values.position;
     end_ranita_x = ranita.values.position + ranita.params.hitbox_width - 1; //Porque position tiene en cuenta el primer pixel
 
-    //printf("start_x_ranita = %d\nend_x_ranita = %d\nstart_y_ranita = %d\nend_y_ranita = %d\n",start_ranita_x,end_ranita_x,start_ranita_y,end_ranita_y);
+    printf("start_x_ranita = %d\nend_x_ranita = %d\nstart_y_ranita = %d\nend_y_ranita = %d\n",start_ranita_x,end_ranita_x,start_ranita_y,end_ranita_y);
 
     for(i=lane_bound-1;i>=0;i--)
     {
-        start_lane_y = (i+1)*LANE_PIXEL_HEIGHT - 1;
-        end_lane_y = (i) * LANE_PIXEL_HEIGHT;
-        //printf("Analyzing lane %d:\n\tstart_lane_y = %d\n\tend_lane_y = %d\n",i,start_lane_y,end_lane_y);
+        end_lane_y = (i+1)*LANE_PIXEL_HEIGHT - 1;
+        start_lane_y = (i) * LANE_PIXEL_HEIGHT;
+        printf("Analyzing lane %d:\n\tstart_lane_y = %d\n\tend_lane_y = %d\n",i,start_lane_y,end_lane_y);
         //First,analyze if the ranita is on the y coordinate capable of interacting with the lane
         if  ((start_ranita_y>= start_lane_y\
             && start_ranita_y <= end_lane_y)\
@@ -199,16 +208,19 @@ static void collisionAnalysis(void)
                 }
                 start_object_x = map.lanes[i].objects[j].position;
                 end_object_x = map.lanes[i].objects[j].position + map.lanes[i].kind->hitbox_width - 1;
-                //printf("Analyzing object index %d:\n\tstart_object_x = %d\n\tend_object_x = %d\n",j,start_object_x,end_object_x);
+                printf("Analyzing object index %d:\n\tstart_object_x = %d\n\tend_object_x = %d\n",j,start_object_x,end_object_x);
                 if((start_ranita_x >= start_object_x && start_ranita_x <= end_object_x)\
                 ||(end_ranita_x >= start_object_x && end_ranita_x <= end_object_x))
                 {
-                    printf("Collision! On lane %d, object %d\n",i,j);
+                    //printf("Collision! On lane %d, .kind = %p\n",i,map.lanes[i].kind);
+                    return map.lanes[i].kind;
                 }    
             }
         }
-        
     }
+    //If no collision found, return NULLPTR
+
+    return NULL;
 }
 
 
@@ -217,7 +229,6 @@ void initializeGameLogic(void)
     srand(time(NULL));
     level = 0;
     fillMap(&map,level);
-    collisionAnalysis();
     printf("lane bound = %d\n",lane_bound);
 }
 

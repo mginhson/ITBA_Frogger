@@ -5,6 +5,7 @@
 int main(int argc, char **argv)
 {
     puts("frogger");
-    initializeGameLogic();    
+    initializeGameLogic();   
+    gameTick(0); 
     return 0;
 }
