@@ -167,24 +167,28 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
 static void collisionAnalysis(void)
 {
     int32_t i,j,start_object_x,end_object_x,start_ranita_x,end_ranita_x,start_ranita_y,end_ranita_y;
+    int32_t start_lane_y,end_lane_y;
     puts("starting collision analysis");
-    printf("ranita.y_position = %d\nranita.hitbox_height = %d\nranita.position = %d\nranita.params.hitbox_width=%d\n",ranita.y_position,ranita.hitbox_height,ranita.values.position,ranita.params.hitbox_width);
+    //printf("ranita.y_position = %d\nranita.hitbox_height = %d\nranita.position = %d\nranita.params.hitbox_width=%d\n",ranita.y_position,ranita.hitbox_height,ranita.values.position,ranita.params.hitbox_width);
     
     start_ranita_y = ranita.y_position - ranita.hitbox_height + 1;//Porque ranita.y_position ya tienen en cuenta el primer pixel
     end_ranita_y = ranita.y_position; 
     start_ranita_x = ranita.values.position;
     end_ranita_x = ranita.values.position + ranita.params.hitbox_width - 1; //Porque position tiene en cuenta el primer pixel
 
+    //printf("start_x_ranita = %d\nend_x_ranita = %d\nstart_y_ranita = %d\nend_y_ranita = %d\n",start_ranita_x,end_ranita_x,start_ranita_y,end_ranita_y);
 
-    for(i=0;i<lane_bound;i++)
+    for(i=lane_bound-1;i>=0;i--)
     {
+        start_lane_y = (i+1)*LANE_PIXEL_HEIGHT - 1;
+        end_lane_y = (i) * LANE_PIXEL_HEIGHT;
+        //printf("Analyzing lane %d:\n\tstart_lane_y = %d\n\tend_lane_y = %d\n",i,start_lane_y,end_lane_y);
         //First,analyze if the ranita is on the y coordinate capable of interacting with the lane
-        
-        if  ((start_ranita_y>= LANE_PIXEL_HEIGHT * i\
-            && start_ranita_y <= LANE_PIXEL_HEIGHT*(i+1))\
+        if  ((start_ranita_y>= start_lane_y\
+            && start_ranita_y <= end_lane_y)\
             ||
-            (end_ranita_y >= LANE_PIXEL_HEIGHT * i\
-            && end_ranita_y <= LANE_PIXEL_HEIGHT*(i+1)))
+            (end_ranita_y >= start_lane_y\
+            && end_ranita_y <= end_lane_y))
         {
             printf("Ranita was found to appear on lane %d\n",i);
             for(j=0;j<object_bound;j++)
@@ -195,7 +199,7 @@ static void collisionAnalysis(void)
                 }
                 start_object_x = map.lanes[i].objects[j].position;
                 end_object_x = map.lanes[i].objects[j].position + map.lanes[i].kind->hitbox_width - 1;
-
+                //printf("Analyzing object index %d:\n\tstart_object_x = %d\n\tend_object_x = %d\n",j,start_object_x,end_object_x);
                 if((start_ranita_x >= start_object_x && start_ranita_x <= end_object_x)\
                 ||(end_ranita_x >= start_object_x && end_ranita_x <= end_object_x))
                 {

@@ -8,8 +8,8 @@
 #endif
 
 #if defined(PC)
-    #define LANE_X_PIXELS 16
-    #define LANE_Y_PIXELS 16
+    #define LANE_X_PIXELS 1000
+    #define LANE_Y_PIXELS 1000
     #define MS_RANITA_MOVEMENT_COOLDOWN 100
 
 #elif RPI

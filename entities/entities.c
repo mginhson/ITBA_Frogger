@@ -58,7 +58,7 @@ static const object_kind_t big_log_object_kind = {
         {
             .background = grass,
             .kind = &bus_object_kind, //no enemies
-            .objects = {{0},{0},{0},{0},{0}},
+            .objects = {{0,.doesExist=1},{1,.doesExist=1},{2,.doesExist=1},{3,.doesExist=1},{4,.doesExist=1}},
 
         }
     };
@@ -99,7 +99,7 @@ int32_t fillMap(map_t *_map, uint32_t _level)
 {
     uint32_t i;
     
-    printf("lane bound on fill map = %d\n",lane_bound);
+    //printf("lane bound on fill map = %d\n",lane_bound);
     printf("Available Arquetypes Element:\n\troad: %d\n\tgrass: %d\n\twater: %d\n\tfinish_line: %d\n\n"
     ,road_arquetypes_elements,grass_arquetypes_elements,water_arquetypes_elements,finish_line_arquetypes_elements);
 
@@ -145,7 +145,7 @@ int32_t fillMap(map_t *_map, uint32_t _level)
                 break;
         }
     }
-    printMap(_map);
+    //printMap(_map);
     return 0;
 }
 

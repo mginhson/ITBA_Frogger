@@ -13,7 +13,7 @@ pc: ${MODULES}
 frogger.o: frogger.c game/game_logic.h
 	${CC} -o frogger.o -c frogger.c ${CFLAGS} ${DEFINE_ARGS}
 
-game_logic.o:  game/game_logic.c game/game_logic.h entities/entities.h
+game_logic.o:  game/game_logic.c game/game_logic.h entities.o
 	${CC} -o game_logic.o -c game/game_logic.c	${DEFINE_ARGS} ${CFLAGS}
 
 entities.o: entities/entities.c entities/entities.h config.h
