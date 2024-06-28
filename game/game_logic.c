@@ -10,6 +10,8 @@
 static void updateMap(void);
 static void generateNewLevel(uint32_t _level);
 
+typedef enum{RANITA_UP,RANITA_DOWN,RANITA_LEFT,RANITA_RIGHT}ranita_logic_direction_t;
+static void triggerRanitaMovement(ranita_logic_direction_t _direction);
 
 
 static map_t map;
@@ -20,19 +22,36 @@ static const uint32_t object_bound = sizeof(map.lanes[0].objects)/sizeof(map.lan
 
 independent_object_t ranita = {
     .params = {
-        .hitbox_width = LANE_X_PIXELS/16,
+        .hitbox_width = LANE_X_PIXELS/12,
         .attr = {.canKill=0, .canMove=1, .isEquippable=0},
-    },
+    }, .hitbox_height = LANE_PIXEL_HEIGHT,
+
+    
+    
 };
 
 /*
     @BRIEF: gameTick
     -Check if the ranita moved  
-    
+    -Update the objects on the map
 */
 void gameTick(uint32_t ms_since_last_tick)
 {
     uint32_t i,j;
+    static int64_t ms_cooldown=0;
+
+    ms_cooldown -= ms_since_last_tick;
+    if(ms_cooldown < 0) //we can check for movement again 
+    {
+        ms_cooldown = 0;
+        if(0) //REPLACE FOR CALLING INPUT FUNCTION
+        {
+            ms_cooldown = MS_RANITA_MOVEMENT_COOLDOWN;
+            //Execute the movement
+            triggerRanitaMovement(RANITA_UP);
+        }
+    }
+
 
     for(i=0; i < lane_bound; i++)
     {
@@ -66,11 +85,45 @@ void gameTick(uint32_t ms_since_last_tick)
                         map.lanes[i].virtual_lane_length - map.lanes[i].kind->hitbox_width;
                     }
                 }
-                
-        
-                
             }
         }
+    }
+
+    //Now we move on to the ranita <3
+
+    
+}
+
+static void triggerRanitaMovement(ranita_logic_direction_t _direction)
+{
+    //REMEMBER that the position is relative to the upper left corner
+    static const int32_t vertical_offset = LANE_Y_PIXELS / LANES_COUNT; //How much should the ranita move vertically 
+    int32_t temp;
+    switch(_direction)
+    {
+        case RANITA_DOWN:
+            temp = ranita.y_position - vertical_offset;
+            
+            break;
+
+
+        case RANITA_UP:
+            
+            break;
+
+
+        case RANITA_LEFT:
+
+            break;
+
+
+        case RANITA_RIGHT:
+
+            break;
+
+        default:
+            printf("Unknown direction input at triggerRanitaMovement()\n");
+            break;
     }
 }
 

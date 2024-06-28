@@ -27,6 +27,7 @@ typedef struct{
     const object_graphics_t graphics;
     const object_attributes_t attr;
     const uint32_t hitbox_width; //From left side, should correspond with graphics width!!!
+    //On dependant objects, hitbox_height is the same as the LANE_HEIGHT
 }object_kind_t;
 
 
@@ -39,6 +40,8 @@ typedef struct{
 typedef struct{
     object_kind_t params;
     object_t values;
+    int32_t y_position;
+    uint32_t hitbox_height; //SHOULD CORRESPOND WITH GRAPHICS HEIGHT!!!
 }independent_object_t;
 
 typedef enum{
