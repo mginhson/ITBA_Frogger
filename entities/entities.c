@@ -3,7 +3,8 @@
 #include <stdint.h>
 #include "entities.h"
 
-const object_kind_t bus_object = {
+const object_kind_t _empty_object_kind
+const object_kind_t bus_object_kind = {
     .hitbox_width=LANE_X_PIXELS / 16,
     .attr = {.canKill = 1, .isEquippable = 0},
 };

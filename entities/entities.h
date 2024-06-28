@@ -33,6 +33,7 @@ typedef struct{
 typedef struct{
     uint32_t position;
     animation_t animation;
+    uint32_t doesExist :1;
 }object_t;
 
 typedef struct{
@@ -47,12 +48,13 @@ typedef enum{
 }background_t;
 
 typedef struct{
-    int32_t ms_to_next;
-    int32_t ms_reload;
-    background_t background;
-    const object_kind_t * kind;
-    const uint32_t virtual_lane_length;
-    object_t objects[MAX_OBJECTS_PER_LANE];
+    int32_t ms_to_next; //Internal counter to know when to move
+    int32_t ms_reload;  //ms per movement
+    background_t background; //background
+    const object_kind_t * kind; //all dependant objects on the lane are of the same kind
+    const uint32_t virtual_lane_length; //True logic lane lenght, DOESN'T correspond to visible lane length in-game
+    object_t objects[MAX_OBJECTS_PER_LANE]; //every dependant object variable data
+    enum{LEFT,RIGHT}direction; //Direction of movement of the lane, either LEFT or RIGHT
 }lane_t;
 
 typedef struct{

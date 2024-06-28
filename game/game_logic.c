@@ -15,7 +15,7 @@ static void generateNewLevel(uint32_t _level);
 static map_t map;
 static uint32_t level;
 static const uint32_t lane_bound = sizeof(map.lanes)/sizeof(map.lanes[0]);
-
+static const uint32_t object_bound = sizeof(map.lanes[0].objects)/sizeof(map.lanes[0].objects[0]);
 
 
 independent_object_t ranita = {
@@ -32,7 +32,7 @@ independent_object_t ranita = {
 */
 void gameTick(uint32_t ms_since_last_tick)
 {
-    uint32_t i=0;
+    uint32_t i,j;
 
     for(i=0; i < lane_bound; i++)
     {
@@ -40,7 +40,8 @@ void gameTick(uint32_t ms_since_last_tick)
 
         if(map.lanes[i].ms_to_next <= 0) //Lane should move a pixel
         {
-            
+            map.lanes[i].ms_to_next += map.lanes[i].ms_reload; //Reload the ms counter
+            for(j=0; j<sizeof(map.lanes[i].))
         }
     }
 }
