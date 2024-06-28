@@ -57,7 +57,8 @@ static const object_kind_t big_log_object_kind = {
         [0] = 
         {
             .background = grass,
-            .kind = NULL, //no enemies
+            .kind = &bus_object_kind, //no enemies
+            .objects = {{0},{0},{0},{0},{0}},
 
         }
     };
@@ -107,33 +108,33 @@ int32_t fillMap(map_t *_map, uint32_t _level)
     {
         switch(i)
         {
-            case 15: //finish line
+            case 0: //finish line
                 _map->lanes[i] = finish_line_arquetypes[rand() % finish_line_arquetypes_elements];
                 break;
 
-            case 14:
-            case 13:
-            case 12:
+            case 1:
+            case 2:
+            case 3:
                 _map->lanes[i] = water_arquetypes[rand() % water_arquetypes_elements];
                 break;
 
-            case 11:
+            case 4:
                 _map->lanes[i] = grass_arquetypes[rand() % grass_arquetypes_elements];
                 break;
 
-            case 10:
-            case 9:
-            case 8:
-            case 7:
-            case 6:
             case 5:
-            case 4:
-            case 3:
-            case 2:
-            case 1:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
                 _map->lanes[i] = road_arquetypes[rand() % road_arquetypes_elements];
                 break;
-            case 0:
+            case 15:
                 _map->lanes[i] = grass_arquetypes[rand() % grass_arquetypes_elements];
                 break;
 

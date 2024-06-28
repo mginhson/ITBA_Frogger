@@ -28,7 +28,7 @@ independent_object_t ranita = {
         .hitbox_width = LANE_X_PIXELS/12,
         .attr = {.canKill=0, .canMove=1, .isEquippable=0},
     }, .hitbox_height = LANE_PIXEL_HEIGHT,
-    .y_position = LANE_PIXEL_HEIGHT,
+    .y_position = LANE_Y_PIXELS-1+LANE_PIXEL_HEIGHT-1,
     
     
 };
@@ -158,33 +158,56 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
 
 /*
     @BRIEF: collisionAnalysis
-        Checks if the ranita collided with something that could kill her 
+        Checks if the ranita collided with something that could kill her
+        end_y->|------|
+                 |      |
+        start_y--->|------|
+        start_x->       <--end_x 
 */
 static void collisionAnalysis(void)
 {
-    uint32_t i,j;
+    int32_t i,j,start_object_x,end_object_x,start_ranita_x,end_ranita_x,start_ranita_y,end_ranita_y;
     puts("starting collision analysis");
-    printf("ranita.y_position = %d\nranita.hitbox_height = %d\n\n",ranita.y_position,ranita.hitbox_height);
+    printf("ranita.y_position = %d\nranita.hitbox_height = %d\nranita.position = %d\nranita.params.hitbox_width=%d\n",ranita.y_position,ranita.hitbox_height,ranita.values.position,ranita.params.hitbox_width);
+    
+    start_ranita_y = ranita.y_position - ranita.hitbox_height + 1;//Porque ranita.y_position ya tienen en cuenta el primer pixel
+    end_ranita_y = ranita.y_position; 
+    start_ranita_x = ranita.values.position;
+    end_ranita_x = ranita.values.position + ranita.params.hitbox_width - 1; //Porque position tiene en cuenta el primer pixel
+
+
     for(i=0;i<lane_bound;i++)
     {
         //First,analyze if the ranita is on the y coordinate capable of interacting with the lane
         
-        if  ((ranita.y_position > LANE_PIXEL_HEIGHT * i\
-            && ranita.y_position < LANE_PIXEL_HEIGHT*(i+1))\
+        if  ((start_ranita_y>= LANE_PIXEL_HEIGHT * i\
+            && start_ranita_y <= LANE_PIXEL_HEIGHT*(i+1))\
             ||
-            ((ranita.y_position-ranita.hitbox_height) > LANE_PIXEL_HEIGHT * i\
-            && (ranita.y_position-ranita.hitbox_height) < LANE_PIXEL_HEIGHT*(i+1)))
+            (end_ranita_y >= LANE_PIXEL_HEIGHT * i\
+            && end_ranita_y <= LANE_PIXEL_HEIGHT*(i+1)))
         {
-            printf("The ranita is in range!\n");
-            
+            printf("Ranita was found to appear on lane %d\n",i);
             for(j=0;j<object_bound;j++)
             {
-                
+                if (map.lanes[i].objects->doesExist == 0) //Este objeto no existe en esta lane
+                {
+                    continue;
+                }
+                start_object_x = map.lanes[i].objects[j].position;
+                end_object_x = map.lanes[i].objects[j].position + map.lanes[i].kind->hitbox_width - 1;
+
+                if((start_ranita_x >= start_object_x && start_ranita_x <= end_object_x)\
+                ||(end_ranita_x >= start_object_x && end_ranita_x <= end_object_x))
+                {
+                    printf("Collision! On lane %d, object %d\n",i,j);
+                }    
             }
         }
         
     }
 }
+
+
 void initializeGameLogic(void)
 {
     srand(time(NULL));
