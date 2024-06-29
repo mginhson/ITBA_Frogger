@@ -4,9 +4,11 @@
 #include "entities.h"
 
 
-
+const object_kind_t empty_object={
+    .hitbox_width = 0,
+};
 const object_kind_t bus_object_kind = {
-    .hitbox_width=LANE_X_PIXELS / 16,
+    .hitbox_width=1,
     .attr = {.canKill = 1, .isEquippable = 0},
 };
 
@@ -28,7 +30,7 @@ const object_kind_t big_log_object_kind = {
     {
         [0]=
         {
-            
+            .direction = RIGHT,
             .kind = &bus_object_kind,
             .background = road,
             .objects =
@@ -36,6 +38,7 @@ const object_kind_t big_log_object_kind = {
                 {.position=0},
                 {.position=LANE_X_PIXELS/2},
             }
+            
         },
          
     };
@@ -145,13 +148,23 @@ int32_t fillMap(map_t *_map, uint32_t _level)
                 _map->lanes[i] = grass_arquetypes[rand() % grass_arquetypes_elements];
                 break;
         }
+        _map->lanes[i].virtual_lane_start = 0;
         _map->lanes[i].ms_to_next=10;
+        _map->lanes[i].ms_reload = 10;
+        _map->lanes[i].virtual_lane_end =LANE_X_PIXELS; //CAMBIAR ESTO, DEBERIA SER CONST Y PREDEFINIDO EN PATRON
     }
     printMap(_map);
     return 0;
 }
 
-
+void printLaneObjects(lane_t *_lane,int32_t index)
+{
+    int32_t i;
+    for (i=0;i<MAX_OBJECTS_PER_LANE;i++)
+    {
+        printf("lane[%d] object[%d]:\n\tposition = %d\n",index,i,_lane->objects[i].position);
+    }
+}
 void printMap(map_t *_map)
 {
     uint32_t i;

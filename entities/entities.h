@@ -59,8 +59,10 @@ typedef struct{
     int32_t ms_reload;  //ms per movement
     background_t background; //background
     object_kind_t * kind; //all dependant objects on the lane are of the same kind
-    uint32_t virtual_lane_length; //True logic lane lenght, DOESN'T correspond to visible lane length in-game
+    
     object_t objects[MAX_OBJECTS_PER_LANE]; //every dependant object variable data
+    int32_t virtual_lane_end; //True logic lane lenght, DOESN'T correspond to visible lane length in-game
+    int32_t virtual_lane_start; //ALWAYS LESS THAN 0-.kind->hitbox_width
     enum{LEFT,RIGHT}direction; //Direction of movement of the lane, either LEFT or RIGHT
 }lane_t;
 
@@ -73,4 +75,5 @@ extern const object_kind_t bus_object_kind;
 
 int32_t fillMap(map_t *_map,uint32_t _level);
 void printMap(map_t *_map);
+void printLaneObjects(lane_t *_lane,int32_t index);
 #endif

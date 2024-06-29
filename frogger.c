@@ -6,6 +6,6 @@ int main(int argc, char **argv)
 {
     puts("frogger");
     initializeGameLogic();   
-    gameTick(0); 
+    gameTick(100); 
     return 0;
 }

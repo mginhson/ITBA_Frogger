@@ -2,13 +2,15 @@ CC := gcc
 CFLAGS := -Wall
 DEFINE_ARGS := #-D PC
 EXEC_NAME := frogger
-MODULES := game_logic.o frogger.o entities.o
+MODULES := game_logic.o frogger.o entities.o 
+
 
 
 all: pc
 
 pc: ${MODULES}
 	${CC} -o ${EXEC_NAME} ${MODULES} ${CFLAGS} ${DEFINE_ARGS}
+
 
 frogger.o: frogger.c game/game_logic.h
 	${CC} -o frogger.o -c frogger.c ${CFLAGS} ${DEFINE_ARGS}
@@ -38,4 +40,4 @@ final.o: finalAnimation/final.c finalAnimation/final.h driv/disdrv.h driv/joydrv
 	gcc -Wall -c finalAnimation/final.c
 
 clean:
-	rm -r ${MODULES} ${EXEC_NAME}
+	rm -r ${MODULES} ${EXEC_NAME} *.o

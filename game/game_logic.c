@@ -13,14 +13,12 @@ static const object_kind_t * collisionAnalysis(void);
 static void winAnalysis(void);
 
 
+
 typedef enum{RANITA_UP,RANITA_DOWN,RANITA_LEFT,RANITA_RIGHT}ranita_logic_direction_t;
 static void triggerRanitaMovement(ranita_logic_direction_t _direction);
+static void triggerDeath(void);
 
-
-static map_t map = 
-{
-    
-};
+static map_t map;
 static uint32_t level;
 static const uint32_t lane_bound = sizeof(map.lanes)/sizeof(map.lanes[0]);
 static const uint32_t object_bound = sizeof(map.lanes[0].objects)/sizeof(map.lanes[0].objects[0]);
@@ -42,10 +40,11 @@ independent_object_t ranita = {
     -Update the objects on the map
     -Check for the interactions between the map and the ranita
 */
-void gameTick(uint32_t ms_since_last_tick)
+void gameTick(int32_t ms_since_last_tick)
 {
     uint32_t i,j;
     static int64_t ms_cooldown=0;
+    int32_t start_object_x,end_object_x;
 
     ms_cooldown -= ms_since_last_tick;
     if(ms_cooldown < 0) //we can check for movement again 
@@ -59,44 +58,63 @@ void gameTick(uint32_t ms_since_last_tick)
         }
     }
 
-
+    
     for(i=0; i < lane_bound; i++)
     {
-        map.lanes[i].ms_to_next -= ms_since_last_tick;
-
-        if(map.lanes[i].ms_to_next <= 0) //Lane should move a pixel
+        int32_t a = map.lanes[i].ms_to_next;
+        map.lanes[i].ms_to_next = a- ms_since_last_tick;
+        map.lanes[i].ms_to_next = map.lanes[i].ms_to_next - ms_since_last_tick;
+        printf("map.lanes[%d].ms_to_next = %d\n",i,map.lanes[i].ms_to_next);
+        
+        
+        if(a<= 0) //Lane should move a pixel
         {
+            printf("hi");
             map.lanes[i].ms_to_next += map.lanes[i].ms_reload; //Reload the ms counter
             /*
                 Now we will analyze if the object should move, and if it does, we have to check
                 wether it went out of the lane bounds, and if so, reset it to the corresponding corner
                 The .position attribute correspond to the leftmost side of an object.
             */
+            printf("d");
+            
             for(j=0; j<object_bound; ++j)
             {
+                
                 if(map.lanes[i].direction == RIGHT) //Move every object a pixel to the right
                 {
+                    printf("b");
                     map.lanes[i].objects[j].position += 1;
-                    if (map.lanes[i].objects[j].position > map.lanes[i].virtual_lane_length)
-                    {
-                        map.lanes[i].objects[j].position = 1 - map.lanes[i].kind->hitbox_width;
-                    }
-                }
-                else
-                {
-                    map.lanes[i].objects->position -= 1;
+                    
+                    end_object_x = map.lanes[i].kind->hitbox_width - 1; //last pixel
 
-                    if(map.lanes[i].objects[j].position + map.lanes[i].kind->hitbox_width < 0)
+                    if (end_object_x > map.lanes[i].virtual_lane_end)
                     {
-                        map.lanes[i].objects[j].position = 
-                        map.lanes[i].virtual_lane_length - map.lanes[i].kind->hitbox_width;
+                       
+                        map.lanes[i].objects[j].position = map.lanes[i].virtual_lane_start;
+                       
                     }
                 }
+                else //map.lanes[i].direction == LEFT
+                {
+                    printf("c");
+                    map.lanes[i].objects->position -= 1;
+                    start_object_x = map.lanes[i].objects[j].position;
+                    
+                    if(start_object_x < map.lanes[i].virtual_lane_start)
+                    {
+                        
+                        map.lanes[i].objects[j].position = map.lanes[i].virtual_lane_end - 1 - map.lanes[i].kind->hitbox_width;
+                        
+                    }
+                }
+                printLaneObjects(&map.lanes[i],i);
             }
         }
     }
 
     //Now we move onto the ranita <3
+    
     const object_kind_t * collision = collisionAnalysis();
     printf("collision = %p\n",collision);
     if (collision == &bus_object_kind)
@@ -223,6 +241,17 @@ static const object_kind_t * collisionAnalysis(void)
     return NULL;
 }
 
+/*
+    @BRIEF: triggerDeath:
+        - Trigger death animation
+        - Check if there are remaining lives
+        - If there are, restart the ranita at starting position
+        - Else, game ends there.
+*/
+static void triggerDeath(void)
+{
+
+}
 
 void initializeGameLogic(void)
 {
