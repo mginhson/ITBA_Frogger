@@ -198,4 +198,6 @@ assets_t * get_chars_assets(char color);
 assets_t * get_frog_chars_assets(void);
 assets_t * get_special_assets(void);
 assets_t * get_wall_assets(void);
+
+#define ROW(x) (REZISE(SHORT_SIZE + NORMAL_SIZE * (x)))
 #endif

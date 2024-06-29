@@ -19,12 +19,14 @@ typedef struct {
     ALLEGRO_TIMER*timer;
     ALLEGRO_EVENT_QUEUE* queue;
     ALLEGRO_DISPLAY* disp;
-    char redraw;
     ALLEGRO_EVENT event;
     ALLEGRO_BITMAP* bitmap;
+    ALLEGRO_MOUSE_STATE mouse_state;
 } g_info_t;
 
-g_info_t *init_allegro(void);
-void destroy_allegro(g_info_t * g_info);
-void load_assets(g_info_t *g_info);
+extern g_info_t general_information;
+
+void *init_allegro(void);
+void destroy_allegro(void);
+
 #endif

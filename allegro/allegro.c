@@ -4,34 +4,45 @@
 #include "assets.h"
 #include "init.h"
 #include "menu.h"
+#include "highscore.h"
+#include "pause.h"
+#include <unistd.h>
+char *nombres[10] = {"Sosa", "Santi P", "Wainer", "Ginhson", "Mechi>God", "Magliola", "Bauti", NULL};
+char *puntajes[10] = {"123", "100", "19", "12", "3", "0", "0",NULL};
+bestPlayers_t list;
 
 int main(void){
-    assets_t * red_font = get_chars_assets('r');
-    assets_t * frog_font = get_frog_chars_assets();
-    assets_t * wall_assets = get_wall_assets();
-    assets_t * special_assets = get_special_assets();
-    assets_t * yellow_font = get_chars_assets('y');
-
-    g_info_t *g_info = init_allegro();
-    if (g_info == NULL){
-        printf("No se pudo cargar las imagenes");
-        return 0;
+    int i;
+    
+    for (i = 0; i<10 || (nombres[i]) != NULL; i++){
+        list.name[i] = nombres[i];
+        list.puntajes[i] = puntajes[i];
     }
-    //load_assets(g_info);
-    //assets_t* frog_assets = get_special_assets();
-    int i = 0;
+    int state = 1;
     while (1){
-        al_wait_for_event(g_info->queue, &(g_info->event));
-        if((g_info->event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)){
-            printf("Salimos\n");
-            break; 
-        }
-        //sprite_to_text("HoLa MUNDI", g_info, red_font, 20, 20, 34);
-        //set_title(frog_font, g_info, TOTAL_WIDTH / 2. - 3.5 * FONT_TITLE_SIZE, TOTAL_HEIGHT/6);
-        draw_menu(g_info, frog_font, wall_assets, &(special_assets[street]), yellow_font);
-        al_flip_display();
-    }
-    free(red_font);
-    destroy_allegro(g_info);
+        switch (state){
+            case 1:{
+                state = menu();
+                break;    
+            }
+            case 3:{
+                state = pause();
+                printf("%d\n", state);
+                break;
+            }
+            case 2: {
+                topTen(list);
+                state = 1;
+                printf("%d\n", state);
+                break;
+            }
+            default:{
+                break;
+            }
+        }   
+        
+        usleep(10000);
+        //sleep(1);
+    } 
     return 0;
 }

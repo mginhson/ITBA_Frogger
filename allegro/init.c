@@ -4,16 +4,22 @@
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 #include <allegro5/allegro_primitives.h>
+
+g_info_t general_information;
 // Funcion que incializa allegro
-g_info_t * init_allegro(void){
+void *init_allegro(void){
     // Inicialización de allegro
     al_init();
     // Instalación del teclado
     al_install_keyboard();
+    // Inicialización mouse
+    al_install_mouse();
     // Inicialización de la libreria para imagenes
     al_init_image_addon();
 
-    al_init_primitives_addon();
+    if (!al_init_primitives_addon()){
+        printf("No se pudo INICIALIZAR");
+    };
     // Creación del timer
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 30.0);
     // Creación de una cola de eventos
@@ -25,10 +31,11 @@ g_info_t * init_allegro(void){
     // Registramos los eventos de teclado, display y timer
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
-    al_register_event_source(queue, al_get_timer_event_source(timer));
+    //al_register_event_source(queue, al_get_timer_event_source(timer));
+    al_register_event_source(queue, al_get_mouse_event_source());
     // Guardamos la información en una variable global
     // Al crear una instancia de g_info_t, automaticamente se crea un ALLEGRO_EVENT
-    g_info_t * g_info = malloc(sizeof(g_info_t));
+    g_info_t * g_info = &general_information;
     
     g_info->timer = timer;
     g_info->queue = queue;
@@ -37,26 +44,21 @@ g_info_t * init_allegro(void){
     al_start_timer(g_info->timer);
     g_info->bitmap =  al_load_bitmap("assets.png");
     if ((g_info->bitmap) == NULL){
-        free(g_info);
         return NULL;
     }
-
+    
     return g_info;
 }
 // Funcion que cierra allegro
-void destroy_allegro(g_info_t* g_info){
+void destroy_allegro(void){
    // al_destroy_font(g_info->font);
-    al_destroy_display(g_info->disp);
-    al_destroy_timer(g_info->timer);
-    al_destroy_event_queue(g_info->queue);
-    al_destroy_bitmap(g_info->bitmap);
     
-    free(g_info);
+    al_destroy_display(general_information.disp);
+    al_destroy_timer(general_information.timer);
+    al_destroy_event_queue(general_information.queue);
+    al_destroy_bitmap(general_information.bitmap);
+    al_uninstall_keyboard();
+    al_uninstall_mouse();
+    return;
 }
-void load_assets(g_info_t *g_info){
-    al_draw_scaled_bitmap(g_info->bitmap,1, 1, 16, 16, 10, 10, 120, 120, 0);
-    al_flip_display();
-}
-int get_event(){
-    return 1;
-}
+

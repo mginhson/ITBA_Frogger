@@ -4,43 +4,93 @@
 #include "assets.h"
 #include "init.h"
 #include "menu.h"
+#include "util.h"
+#include "components/text.h"
 #include <string.h>
 #include <stdio.h>
-#define IS_NUMBER(x) ((x) <= '9' && (x) >= '0')
-#define IS_LETTER(x) (((x) <= 'z' && (x) >= 'a') || ((x) <= 'Z' && (x) >= 'A'))
-void draw_menu(g_info_t *g_info, assets_t* frog_font, assets_t *wall_assets, assets_t *street_assets, assets_t *font){
+#include <unistd.h>
+int menu(void){
+    // En caso de que allegro no este instalado, lo inicializamos
+
+    static int installed = 0;
+    
+    if (!installed){
+        init_allegro();      
+    }
+   
+    installed = 1;
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    
+    // Obtenemos un puntero  s a general_information que es una variable global con informacion del juego
+    g_info_t * g_info = &general_information;
+   
+    //assets_t * red_font = get_chars_assets('r');
+    assets_t * frog_font = get_frog_chars_assets();
+    assets_t * wall_assets = get_wall_assets();
+    assets_t * special_assets = get_special_assets();
+    assets_t * street_assets = &(special_assets[street]);
+    assets_t * font = get_chars_assets('y');
+    ;
     set_background(g_info, wall_assets, street_assets);
     // Ponemos el titulo
     set_title(frog_font, g_info, TOTAL_WIDTH / 2. - 3.5 * FONT_TITLE_SIZE, TOTAL_HEIGHT/6);
+    text_t * play_text = create_text("Play", g_info, font, TOTAL_WIDTH/2,REZISE(WALL_SIZE + 9.5*NORMAL_SIZE) ,REZISE(8), CENTERED);
+    text_t * highscore_text = create_text("Highscores", g_info, font, TOTAL_WIDTH/2,REZISE(WALL_SIZE + 10.75*NORMAL_SIZE) ,REZISE(8), CENTERED);
+    text_t * quit_text = create_text("Quit Game", g_info, font, TOTAL_WIDTH/2,REZISE(WALL_SIZE + 12.*NORMAL_SIZE) ,REZISE(8), CENTERED);
+    
+    draw_text(play_text);
+    draw_text(highscore_text);
+    draw_text(quit_text);
+    /*
     sprite_to_text("Play", g_info, font, TOTAL_WIDTH/2,REZISE(WALL_SIZE + 9.5*NORMAL_SIZE) ,REZISE(8));
     sprite_to_text("Highscores", g_info, font, TOTAL_WIDTH/2,REZISE(WALL_SIZE + 10.75*NORMAL_SIZE) ,REZISE(8));
     sprite_to_text("Quit Game", g_info, font, TOTAL_WIDTH/2,REZISE(WALL_SIZE + 12.*NORMAL_SIZE) ,REZISE(8));
-}
-// Escribe texto y letras en minusculas o mayusculas siempre centrado
-void sprite_to_text(char * str, g_info_t * g_info,assets_t * font, float x, float y, float font_size){
-    x -= (strlen(str) * REZISE(SHORT_SIZE)) / 2;
-
-    int i;
-    for (i = 0; str[i] != '\0'; i++){
-        int j;
-        if (IS_NUMBER(str[i])){
-            j = str[i] - '0';
-            al_draw_scaled_bitmap(g_info->bitmap, font[j].sx, font[j].sy, font[j].sw, font[j].sh, x + font_size * i, y, font_size, font_size, 0);
-        } else if (IS_LETTER(str[i])){
-            // Sumamos 9 ya que las letras empiezan a partir del 9
-            if (str[i] < 'a'){
-                j = str[i] + '9' - '0' - 'A' + 1;
-            } else {
-                j = str[i] + '9' - '0' - 'a' + 1;         
+    */
+    al_flip_display();
+    ALLEGRO_EVENT event_capture;
+    int return_value = NONE;
+    // Hasta que no cambie el valor de lo que devolvemos no retornamos nada
+    
+    while (return_value == NONE){
+        // Leemos todos los eventos de la lista de espera
+        al_wait_for_event(g_info->queue, &event_capture);
+        
+        switch (event_capture.type){
+                    // En el caso de que hayamos hecho click, debemos ver si fue en alguno de los textos.
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:{
+                printf("Click\n");
+                if (text_was_selected(play_text, event_capture.mouse.x, event_capture.mouse.y)){
+                    return_value = START;
+                } else if (text_was_selected(highscore_text, event_capture.mouse.x, event_capture.mouse.y)){
+                    return_value = TOP;
+                } else if (text_was_selected(quit_text, event_capture.mouse.x, event_capture.mouse.y)){
+                    return_value = END;
+                }
+                        
+                break;
             }
-            al_draw_scaled_bitmap(g_info->bitmap, font[j].sx, font[j].sy, font[j].sw, font[j].sh, x + font_size * i, y, font_size, font_size, 0);
-        } 
-        // Cualquier cosa que no se pueda escribir, se tomara como un espacio ' '
-        
-        
+            default:{
+                break;
+            }
+                    
+        }
     }
-    return;
+
+    
+
+    // Ver eficiencia mas adelante porque continuamente alocamos y liberamos memoria
+    free(play_text);
+    free(highscore_text);
+    free(quit_text);
+    free(frog_font);
+    free(wall_assets);
+    free(special_assets);
+    free(font);
+    
+    return return_value;
 }
+
+
 void set_title(assets_t *title_font, g_info_t* g_info,float x, float y){
     al_draw_scaled_bitmap(g_info->bitmap, title_font[frog_f].sx, title_font[frog_f].sy, title_font[frog_f].sw, title_font[frog_f].sh, x + 0 * FONT_TITLE_SIZE, y, FONT_TITLE_SIZE, FONT_TITLE_SIZE, 0);
     al_draw_scaled_bitmap(g_info->bitmap, title_font[frog_r].sx, title_font[frog_r].sy, title_font[frog_r].sw, title_font[frog_r].sh, x + 1 * FONT_TITLE_SIZE, y, FONT_TITLE_SIZE, FONT_TITLE_SIZE, 0);
@@ -78,8 +128,8 @@ void set_background(g_info_t *g_info, assets_t * wall_assets, assets_t * street_
         al_draw_scaled_bitmap(g_info->bitmap,sxb,syb ,swb ,shb, dxb, dyb, dwb, dhb, 0);
         al_draw_scaled_bitmap(g_info->bitmap, sxs, sys, sws, shs, dxs, dys, dws, dhs, 0);
     }
-    draw_street_line(g_info, street_asset, REZISE(WALL_SIZE + 7 * NORMAL_SIZE));
-    draw_street_line(g_info, street_asset, REZISE(WALL_SIZE + 14 * NORMAL_SIZE));
+    draw_street_line(g_info, street_asset, ROW(8));
+    draw_street_line(g_info, street_asset, ROW(15));
     return;
 }
 void draw_street_line(g_info_t * g_info, assets_t * street_assets, float y){
