@@ -7,7 +7,7 @@
 static int reading (joyinfo_t * inputJ);
 static void top (char * name, char * puntaje, char puesto);
 static void top2 (char * name, char * puntaje, char puesto);
-void topTen(bestPlayers_t bestPlayers){
+int topTen(bestPlayers_t bestPlayers){
     joyinfo_t inputJ = {0, 0, 0};
     int state = TOP1;
     int flag = 0;
@@ -111,6 +111,7 @@ void topTen(bestPlayers_t bestPlayers){
         }
         usleep(100000);
     }
+    return(1);
 }
 static int reading (joyinfo_t * inputJ){
     (*inputJ) = joy_read();

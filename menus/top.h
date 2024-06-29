@@ -8,7 +8,7 @@ typedef struct{
 
 
 enum options_2{TOP1, TOP2,TOP3, TOP4,TOP5, TOP6,TOP7, TOP8, TOP9, TOP10, BACK};
-void topTen(bestPlayers_t bestPlayers);
+int topTen(bestPlayers_t bestPlayers);
 
 
 #endif
