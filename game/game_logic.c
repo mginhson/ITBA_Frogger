@@ -17,6 +17,7 @@ static void winAnalysis(void);
 typedef enum{RANITA_UP,RANITA_DOWN,RANITA_LEFT,RANITA_RIGHT}ranita_logic_direction_t;
 static void triggerRanitaMovement(ranita_logic_direction_t _direction);
 static void triggerDeath(void);
+static void gameOver(void);
 
 static map_t map;
 static uint32_t level;
@@ -63,7 +64,7 @@ void gameTick(int32_t ms_since_last_tick)
     {
         int32_t a = map.lanes[i].ms_to_next;
         map.lanes[i].ms_to_next = a- ms_since_last_tick;
-        map.lanes[i].ms_to_next = map.lanes[i].ms_to_next - ms_since_last_tick;
+        //map.lanes[i].ms_to_next = map.lanes[i].ms_to_next - ms_since_last_tick;
         printf("map.lanes[%d].ms_to_next = %d\n",i,map.lanes[i].ms_to_next);
         
         
@@ -189,7 +190,7 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
         end_y----->|------|
                    |      |
         start_y--->|------|
-        start_x->       <--end_x 
+        start_x--->        <--end_x 
 */
 static const object_kind_t * collisionAnalysis(void)
 {
