@@ -58,7 +58,7 @@ typedef struct{
     int32_t ms_to_next; //Internal counter to know when to move
     int32_t ms_reload;  //ms per movement
     background_t background; //background
-    object_kind_t * kind; //all dependant objects on the lane are of the same kind
+    const object_kind_t * kind; //all dependant objects on the lane are of the same kind
     
     object_t objects[MAX_OBJECTS_PER_LANE]; //every dependant object variable data
     int32_t virtual_lane_end; //True logic lane lenght, DOESN'T correspond to visible lane length in-game
@@ -73,6 +73,13 @@ typedef struct{
 
 extern const object_kind_t bus_object_kind;
 extern const object_kind_t empty_object;
+extern const object_kind_t car_object_kind;
+extern const object_kind_t small_log_object_kind;
+extern const object_kind_t normal_log_object_kind;
+extern const object_kind_t big_log_object_kind;
+extern const object_kind_t snake_object_kind;
+extern const object_kind_t lilypad_object_kind;
+
 
 int32_t fillMap(map_t *_map,uint32_t _level);
 void printMap(map_t *_map,int32_t a);

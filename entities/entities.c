@@ -271,7 +271,7 @@ static const lane_t road_arquetypes[] =
         {
             .direction = RIGHT,
             .kind = &bus_object_kind,
-            .background = road,
+            .background = road, 
             .objects =
             {
                 [0]={.position=0,.doesExist=1},
@@ -586,7 +586,7 @@ void printMap(map_t *_map,int32_t a)
     else //Print objects;
     {
         printf("Map settings:\n\tLANE_X_PIXELS = %d\n\n",LANE_X_PIXELS);
-        for(i=5; i < 6;i++)
+        for(i=0; i < lane_bound;i++)
         {
             printf("Lane %d:\n",i);
             for(j=0; j < object_bound;j++)

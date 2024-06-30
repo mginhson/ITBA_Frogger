@@ -99,13 +99,16 @@ void gameTick(int32_t ms_since_last_tick)
                     continue;
                 }   
                 
+
+                
+                
                 if(map.lanes[i].direction == RIGHT) //Move every object a pixel to the right
                 {
-                              
+                    
                     map.lanes[i].objects[j].position += 1;
                     
-                    end_object_x = map.lanes[i].kind->hitbox_width - 1; //last pixel
-
+                    end_object_x = map.lanes[i].objects[j].position + map.lanes[i].kind->hitbox_width - 1; //last pixel
+                    
                     if (end_object_x > map.lanes[i].virtual_lane_end)
                     {
                        
@@ -140,7 +143,14 @@ void gameTick(int32_t ms_since_last_tick)
     {
         
     }
-    
+    else if (collision == &car_object_kind)
+    {
+        
+    }
+    else if(collision ==  &snake_object_kind)
+    {
+
+    }   
     else    //collision == NULL, will check if won
     {
         if (ranita.y_position <= LANE_PIXEL_HEIGHT)
@@ -161,20 +171,19 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
     switch(_direction)
     {
         case RANITA_DOWN:
-            temp = ranita.y_position - ranita.hitbox_height; //y position of the bottom
-            if (temp - ranita.hitbox_height < 0) //would go below map, set is as low as possible
+            temp = ranita.y_position - ranita.hitbox_height + 1; //y position of the bottom
+            if (temp + ranita.hitbox_height >= LANE_Y_PIXELS) //would go below map, set is as low as possible
             {
-                ranita.y_position = ranita.hitbox_height; //lowest pixel for the upper left corner
+                ranita.y_position = LANE_Y_PIXELS-1-ranita.hitbox_height; //lowest pixel for the upper left corner
             }
             else
             {
-                ranita.y_position -= ranita.hitbox_height;
+                ranita.y_position += ranita.hitbox_height;
             }
             break;
 
 
         case RANITA_UP:
-            
             if (ranita.y_position  <= 0) //would go above map
             {
                 ranita.y_position = 0;//uppermost pixel for the upper left corner
@@ -183,7 +192,6 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
             {
                 ranita.y_position -= ranita.hitbox_height;
             }
-
             break;
 
 
@@ -200,10 +208,11 @@ static void triggerRanitaMovement(ranita_logic_direction_t _direction)
 
 
         case RANITA_RIGHT:
-            temp = ranita.values.position + ranita.params.hitbox_width; //right corner uppermost pixel
+            temp = ranita.values.position + ranita.params.hitbox_width - 1; //right corner uppermost pixel
+            
             if((temp + ranita.params.hitbox_width) >= LANE_X_PIXELS) //would go right from mapside
             {
-                ranita.values.position = LANE_X_PIXELS - 1;
+                ranita.values.position = LANE_X_PIXELS - 1 - ranita.params.hitbox_width;
             }
             break;
 
