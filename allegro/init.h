@@ -4,13 +4,8 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 
+#define STREET_COLOR (al_map_rgb(0, 0, 0)) 
 #define RIVER_COLOR (al_map_rgb(2, 11, 88))
-#define BOTTOM_SIZE 32
-#define TOTAL_ROWS 16
-#define TOTAL_COLUMNS 12
-#define TOTAL_WIDTH (REZISE(TOTAL_COLUMNS* NORMAL_SIZE))
-#define TOTAL_HEIGHT (REZISE(BOTTOM_SIZE + SHORT_SIZE + TOTAL_ROWS * NORMAL_SIZE))
-
 
 /*
     Estructura que guarda la información general del juego al renderizar.

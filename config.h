@@ -1,7 +1,18 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-
+#define SHORT_SIZE 8
+#define NORMAL_SIZE 16
+#define BIG_SIZE 32
+#define GIGANT_SIZE 48
+#define WALL_SIZE 24
+#define BOTTOM_SIZE 32
+#define TOTAL_ROWS 16
+#define TOTAL_COLUMNS 12
+#define REZISE(x) (2.75*(x))
+#define TOTAL_WIDTH (REZISE(TOTAL_COLUMNS* NORMAL_SIZE))
+#define TOTAL_HEIGHT (REZISE(BOTTOM_SIZE + SHORT_SIZE + TOTAL_ROWS * NORMAL_SIZE))
+#define ROW(x) (REZISE(SHORT_SIZE + NORMAL_SIZE * (x)))
 #define LANES_COUNT 16
 #define MAX_OBJECTS_PER_LANE 5
 
@@ -11,8 +22,8 @@
 #endif
 
 #if defined(PC)
-    #define LANE_X_PIXELS (LANES_COUNT * 1)
-    #define LANE_Y_PIXELS (LANES_COUNT * 1)
+    #define LANE_X_PIXELS (TOTAL_WIDTH)
+    #define LANE_Y_PIXELS (TOTAL_HEIGHT)
     #define MS_RANITA_MOVEMENT_COOLDOWN 100
 
 #elif defined(RPI)

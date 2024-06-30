@@ -2,15 +2,15 @@ CC := gcc
 CFLAGS := -Wall
 DEFINE_ARGS := #-D PC
 EXEC_NAME := frogger
-MODULES := game_logic.o frogger.o entities.o 
+MODULES := game_logic.o frogger.o entities.o init.o assets.o menu.o util.o highscore.o text.o pause.o objects.o render.o
+ALLEGRO_INCLUDES := -lallegro -lallegro_font -lallegro_image -lallegro_primitives
 
 
 
 all: pc
 
 pc: ${MODULES}
-	${CC} -o ${EXEC_NAME} ${MODULES} ${CFLAGS} ${DEFINE_ARGS}
-
+	${CC} -o ${EXEC_NAME} ${MODULES} ${ALLEGRO_INCLUDES} ${CFLAGS} ${DEFINE_ARGS}
 
 frogger.o: frogger.c game/game_logic.h
 	${CC} -o frogger.o -c frogger.c ${CFLAGS} ${DEFINE_ARGS}
@@ -20,24 +20,24 @@ game_logic.o:  game/game_logic.c game/game_logic.h entities.o
 
 entities.o: entities/entities.c entities/entities.h config.h
 	${CC} -o entities.o -c entities/entities.c ${CFLAGS} ${DEFINE_ARGS}
-
-inicialization.o: inicialization/inicialization.c  inicialization/inicialization.h driv/formas.h driv/disdrv.h driv/joydrv.h
-	gcc -Wall -c inicialization/inicialization.c
-
-formas.o: driv/formas.c driv/formas.h driv/disdrv.h
-	gcc -Wall -c driv/formas.c
-
-menu.o: menus/menu.c menus/menu.h driv/disdrv.h driv/joydrv.h driv/formas.h
-	gcc -Wall -c menus/menu.c
-
-pause.o: menus/pause.c menus/pause.h driv/disdrv.h driv/joydrv.h driv/formas.h
-	gcc -Wall -c menus/pause.c
-
-top.o: menus/top.c menus/top.h driv/disdrv.h driv/joydrv.h driv/formas.h
-	gcc -Wall -c menus/top.c
-
-final.o: finalAnimation/final.c finalAnimation/final.h driv/disdrv.h driv/joydrv.h driv/formas.h
-	gcc -Wall -c finalAnimation/final.c
+init.o: allegro/init.c allegro/init.h allegro/assets.h config.h
+	gcc allegro/init.c -c
+assets.o: allegro/assets.c allegro/assets.h config.h
+	gcc allegro/assets.c -c
+menu.o : allegro/menu.c allegro/init.h allegro/assets.h allegro/menu.h allegro/util.h allegro/components/text.h allegro/components/objects.h allegro/render.h config.h
+	gcc allegro/menu.c -c
+util.o : allegro/util.c allegro/util.h allegro/init.h allegro/assets.h config.h
+	gcc allegro/util.c -c
+text.o : allegro/components/text.c allegro/components/text.h allegro/init.h allegro/assets.h config.h
+	gcc allegro/components/text.c -c
+highscore.o: allegro/highscore.c allegro/highscore.h allegro/components/text.h  allegro/init.h config.h
+	gcc allegro/highscore.c -c
+pause.o: allegro/pause.c allegro/pause.h allegro/components/text.h allegro/init.h config.h
+	gcc allegro/pause.c -c
+objects.o: allegro/components/objects.c  allegro/init.h allegro/assets.h allegro/components/objects.h config.h
+	gcc allegro/components/objects.c -c
+render.o: allegro/render.c allegro/render.h entities/entities.h allegro/assets.h allegro/init.h config.h
+	gcc allegro/render.c -c
 
 clean:
 	rm -r ${MODULES} ${EXEC_NAME} *.o

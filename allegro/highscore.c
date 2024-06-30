@@ -5,7 +5,7 @@
 #include "components/text.h"
 #include <allegro5/allegro5.h>
 #include <stdio.h>
-
+#include "../config.h"
 void topTen(bestPlayers_t bestPlayers){
     // Cargo la fuente amarilla y roja
     
@@ -20,15 +20,15 @@ void topTen(bestPlayers_t bestPlayers){
     text_t *texts[25];
     for (i=0; i < TOP_10 && (bestPlayers.name)[i] != NULL; i++){
         
-        texts[i*2] = create_text((bestPlayers.name)[i], &general_information, yellow_font,TOTAL_WIDTH * (1./4),ROW(i + 4), REZISE(SHORT_SIZE),CENTERED);
-        texts[i *2 + 1] = create_text((bestPlayers.puntajes)[i], &general_information, red_font,TOTAL_WIDTH * (3/4.),ROW(i + 4), REZISE(SHORT_SIZE), CENTERED);
+        texts[i*2] = create_text((bestPlayers.name)[i], yellow_font,TOTAL_WIDTH * (1./4),ROW(i + 4), REZISE(SHORT_SIZE),CENTERED);
+        texts[i *2 + 1] = create_text((bestPlayers.puntajes)[i], red_font,TOTAL_WIDTH * (3/4.),ROW(i + 4), REZISE(SHORT_SIZE), CENTERED);
 
     }
     i *= 2;
-    texts[i++] = create_text("Nombre", &general_information, yellow_font, TOTAL_WIDTH * (1./4),ROW(3),  REZISE(SHORT_SIZE),CENTERED);
-    texts[i++] = create_text("Puntaje", &general_information, red_font, TOTAL_WIDTH * (3/4.), ROW(3) , REZISE(SHORT_SIZE), CENTERED);
-    texts[i++] = create_text("Top 10", &general_information, yellow_font, TOTAL_WIDTH/2, ROW(1), REZISE(NORMAL_SIZE), CENTERED);
-    text_t *back_to_menu = create_text("BACK TO MENU", &general_information, yellow_font, TOTAL_WIDTH/2, ROW(15) ,REZISE(8), CENTERED);
+    texts[i++] = create_text("Nombre", yellow_font, TOTAL_WIDTH * (1./4),ROW(3),  REZISE(SHORT_SIZE),CENTERED);
+    texts[i++] = create_text("Puntaje", red_font, TOTAL_WIDTH * (3/4.), ROW(3) , REZISE(SHORT_SIZE), CENTERED);
+    texts[i++] = create_text("Top 10", yellow_font, TOTAL_WIDTH/2, ROW(1), REZISE(NORMAL_SIZE), CENTERED);
+    text_t *back_to_menu = create_text("BACK TO MENU", yellow_font, TOTAL_WIDTH/2, ROW(15) ,REZISE(8), CENTERED);
     texts[i++] = back_to_menu;
     texts[i++] = NULL;
     
@@ -40,6 +40,8 @@ void topTen(bestPlayers_t bestPlayers){
     }
     al_flip_display();
     ALLEGRO_EVENT event_capture;
+
+    int counter = 0;
     while (!return_value){
         // Leemos todos los eventos de la lista de espera
         al_wait_for_event(general_information.queue, &event_capture);
@@ -47,15 +49,34 @@ void topTen(bestPlayers_t bestPlayers){
         switch (event_capture.type){
                     // En el caso de que hayamos hecho click, debemos ver si fue en alguno de los textos.
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:{
-                    printf("Catch\n");
+                    
                 if (text_was_selected(back_to_menu, event_capture.mouse.x, event_capture.mouse.y)){
                     return_value = 1;
                 }                        
                 break;
             }
-            default:{
+            case ALLEGRO_EVENT_KEY_DOWN:{
+                if (event_capture.keyboard.keycode == ALLEGRO_KEY_ENTER){
+                    
+                    return_value = 1;
+                }
                 break;
             }
+            case ALLEGRO_EVENT_TIMER:{
+                counter++;
+                if (counter == 5){
+                    twinkle(1, 0,yellow_font, red_font, back_to_menu);
+                    al_flip_display();
+                    counter = 0;
+                }
+                break; 
+            }
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:{
+                // Cambiar esto
+               
+                return_value = 1;
+                break;
+            } 
                 
             
         }
