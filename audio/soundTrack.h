@@ -1,3 +1,5 @@
+
+#ifdef RPI
 #ifndef SOUNDTRACK_H
 #define SOUNDTRACK_H
 
@@ -12,3 +14,4 @@ void music (void);
 
 #endif
 
+#endif

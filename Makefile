@@ -2,15 +2,8 @@ CC := gcc
 CFLAGS := -Wall
 DEFINE_ARGS := -D RPI
 EXEC_NAME := frogger
-<<<<<<< HEAD
 MODULES := game_logic.o frogger.o entities.o init.o assets.o menu.o util.o highscore.o text.o pause.o objects.o render.o
 ALLEGRO_INCLUDES := -lallegro -lallegro_font -lallegro_image -lallegro_primitives
-=======
-MODULES := game_logic.o frogger.o entities.o inicialization/inicialization.o \
-		   driv/formas.o driv/disdrv.o driv/joydrv.o menus/menu.o menus/pause.o menus/top.o \
-		   finalAnimation/final.o mundo/renderWorld.o audio/soundTrack.o \
-		   audio/libAudioSDL2.o -lSDL2
->>>>>>> e6abcbb11507804f1a15341fab765d7b2790171e
 
 
 
