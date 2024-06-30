@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "game/game_logic.h"
 #include <time.h>
-#include "mundo/renderWorld.h"
+
 int main(int argc, char **argv)
 {
     puts("frogger");
