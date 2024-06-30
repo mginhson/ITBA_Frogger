@@ -160,7 +160,7 @@ void gameTick(int32_t ms_since_last_tick)
             
         }
     }
-    renderWorld(&map, &ranita, 1, 64);
+    //renderWorld(&map, &ranita, 1, 64);
 }
 
 
