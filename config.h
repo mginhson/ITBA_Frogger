@@ -7,7 +7,7 @@
 
 
 #if !defined(PC) && !defined(RPI)
-    #define PC
+    #define RPI
 #endif
 
 #if defined(PC)
