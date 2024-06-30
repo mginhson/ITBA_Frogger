@@ -57,14 +57,14 @@ void gameTick(int32_t ms_since_last_tick)
     puts("Map before executing gameTick:\n");
     printMap(&map,0);
     ms_cooldown -= ms_since_last_tick;
-    if(ms_cooldown < 0 || 1) //we can check for movement again 
+    if(ms_cooldown < 0) //we can check for movement again 
     {
         ms_cooldown = 0;
         if(1) //REPLACE FOR CALLING INPUT FUNCTION
         {
             ms_cooldown = MS_RANITA_MOVEMENT_COOLDOWN;
             //Execute the movement
-            triggerRanitaMovement(RANITA_UP);
+            //triggerRanitaMovement(RANITA_UP);
         }
     }
 
@@ -80,7 +80,7 @@ void gameTick(int32_t ms_since_last_tick)
         if(map.lanes[i].ms_to_next <= 0) //Lane should move a pixel
         {
             
-            map.lanes[i].ms_to_next += map.lanes[i].ms_reload; //Reload the ms counter
+            map.lanes[i].ms_to_next = map.lanes[i].ms_reload; //Reload the ms counter
             /*
                 Now we will analyze if the object should move, and if it does, we have to check
                 wether it went out of the lane bounds, and if so, reset it to the corresponding corner
@@ -98,9 +98,10 @@ void gameTick(int32_t ms_since_last_tick)
                 {
                     continue;
                 }   
+                
                 if(map.lanes[i].direction == RIGHT) //Move every object a pixel to the right
                 {
-                    
+                              
                     map.lanes[i].objects[j].position += 1;
                     
                     end_object_x = map.lanes[i].kind->hitbox_width - 1; //last pixel
