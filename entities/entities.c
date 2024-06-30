@@ -7,6 +7,7 @@
 const object_kind_t empty_object={
     .hitbox_width = 0,
 };
+
 const object_kind_t bus_object_kind = {
     .hitbox_width=1,
     .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
