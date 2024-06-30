@@ -53,6 +53,9 @@ void gameTick(int32_t ms_since_last_tick)
     static int64_t ms_cooldown=0;
     int32_t start_object_x,end_object_x;
 
+
+    puts("Map before executing gameTick:\n");
+    printMap(&map,0);
     ms_cooldown -= ms_since_last_tick;
     if(ms_cooldown < 0 || 1) //we can check for movement again 
     {
@@ -123,7 +126,7 @@ void gameTick(int32_t ms_since_last_tick)
                         
                     }
                 }
-                printLaneObjects(&map.lanes[i],i);
+                //printLaneObjects(&map.lanes[i],i);
             }
         }
     }
@@ -148,6 +151,7 @@ void gameTick(int32_t ms_since_last_tick)
     }
     
 }
+
 
 static void triggerRanitaMovement(ranita_logic_direction_t _direction)
 {
@@ -297,6 +301,8 @@ void initializeGameLogic(void)
     fillMap(&map,level);
     printf("lane bound = %d\n",lane_bound);
 }
+
+
 
 
 
