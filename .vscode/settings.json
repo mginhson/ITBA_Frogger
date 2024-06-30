@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "util.h": "c",
+        "stdint.h": "c",
+        "text.h": "c",
+        "assets.h": "c",
+        "menu.h": "c",
+        "init.h": "c",
+        "allegro_primitives.h": "c",
+        "stdio.h": "c",
+        "typeinfo": "c",
+        "allegro.h": "c",
+        "render.h": "c",
+        "allegro5.h": "c",
+        "entities.h": "c",
+        "objects.h": "c",
+        "stdarg.h": "c",
+        "input.h": "c"
+    }
+}
