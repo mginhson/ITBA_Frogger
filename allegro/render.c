@@ -1,0 +1,98 @@
+#include "render.h"
+#include "../entities/entities.h"
+#include "assets.h"
+#include "init.h"
+#include <allegro5/allegro5.h>
+#include <allegro5/allegro_primitives.h>
+#include "../config.h"
+static void draw_lane(lane_t* lane, int row);
+static void draw_lane_background(lane_t * lane, int row);
+static void draw_lane_objects(lane_t * lane, int row);
+
+
+
+void renderWorld(map_t *map, independent_object_t* frog[], int size, int tiempo){
+    int i;
+    for (i=0; i < LANES_COUNT; i++){
+        draw_lane(&((map->lanes)[i]), i);
+    }
+    al_flip_display();
+}
+static void draw_lane(lane_t * lane, int row){
+    draw_lane_background(lane, row);
+    draw_lane_objects(lane, row);
+}
+static void draw_lane_objects(lane_t *lane, int row){
+    // Accedo a los objetos de lane y los renderizo
+    int i;
+    for (i = 0; i < MAX_OBJECTS_PER_LANE; i++){
+        if ((lane->objects)[i].doesExist){
+            
+        } 
+    }
+}
+static void draw_lane_background(lane_t * lane, int row){
+    // Dibujamos el fondo dependiendo del fondo
+    switch (lane->background){
+        case water:{
+            al_draw_rectangle(0, ROW(row), TOTAL_WIDTH, ROW(row+1), RIVER_COLOR, 0);
+            break;
+        }
+        case road: { 
+            al_draw_rectangle(0, ROW(row), TOTAL_WIDTH, ROW(row + 1), STREET_COLOR, 0);
+            break;
+        }
+        case grass: {
+            draw_full_line(&(get_special_assets()[street]), ROW(row));
+            break;
+        }
+        case finish_line:{
+            draw_finish_line((get_wall_assets()));
+            break;
+        }
+    }
+}
+void draw_full_line(assets_t * line, float y){
+    int i;
+    for (i = 0; i * REZISE(NORMAL_SIZE) < TOTAL_WIDTH; i++){
+        float sx = line->sx;
+        float sy = line->sy;
+        float sw = line->sw;
+        float sh = line->sh;
+
+        float dw = REZISE(sw);
+        float dh = REZISE(sh);
+        float dy = y;
+        float dx = i * dw;
+        al_draw_scaled_bitmap(general_information.bitmap, sx, sy, sw, sh, dx, dy, dw, dh, 0);
+    }
+    return;
+
+}
+void draw_finish_line(assets_t * wall_assets){
+    int i;
+        for (i = 0; i* REZISE((BIG_SIZE + SHORT_SIZE)) < TOTAL_WIDTH; i++){
+        float sxb = wall_assets[big_wall].sx;
+        float syb = wall_assets[big_wall].sy;
+        float swb = wall_assets[big_wall].sw;
+        float shb = wall_assets[big_wall].sh;
+        float dwb = REZISE(swb);
+        float dhb = REZISE(shb);
+
+        float sxs = wall_assets[small_wall].sx;
+        float sys = wall_assets[small_wall].sy;
+        float sws = wall_assets[small_wall].sw;
+        float shs = wall_assets[small_wall].sh;
+        float dws = REZISE(sws);
+        float dhs = REZISE(shs);
+
+        float dxb = (dws + dwb) * i;
+        float dyb = 0;
+
+        float dxs = (dws + dwb) * i + dwb;
+        float dys = 0;
+
+        al_draw_scaled_bitmap(general_information.bitmap,sxb,syb ,swb ,shb, dxb, dyb, dwb, dhb, 0);
+        al_draw_scaled_bitmap(general_information.bitmap, sxs, sys, sws, shs, dxs, dys, dws, dhs, 0);
+    }
+}

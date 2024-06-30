@@ -1,14 +1,6 @@
 #ifndef ASSETS
 #define ASSETS
 
-#define REZISE(x) (2.75*(x))
-
-#define SHORT_SIZE 8
-#define NORMAL_SIZE 16
-#define BIG_SIZE 32
-#define GIGANT_SIZE 48
-#define WALL_SIZE 24
-
 #define WALL_ASSETS 2
 #define WALL_ASSETS_Y 188
 
@@ -199,5 +191,4 @@ assets_t * get_frog_chars_assets(void);
 assets_t * get_special_assets(void);
 assets_t * get_wall_assets(void);
 
-#define ROW(x) (REZISE(SHORT_SIZE + NORMAL_SIZE * (x)))
 #endif

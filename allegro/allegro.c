@@ -27,13 +27,13 @@ int main(void){
             }
             case 3:{
                 state = pause();
-                printf("%d\n", state);
+               
                 break;
             }
             case 2: {
                 topTen(list);
                 state = 1;
-                printf("%d\n", state);
+               
                 break;
             }
             default:{

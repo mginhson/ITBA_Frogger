@@ -4,16 +4,17 @@
 #include "components/text.h"
 #include "pause.h"
 #include <stdio.h>
+#include "../config.h"
 int pause(void){
     al_clear_to_color(al_map_rgb(0, 0 ,0));
     assets_t * violet_font = get_chars_assets('v');
     assets_t * blue_font = get_chars_assets('b');
     
-    text_t * pause_text = create_text("PAUSA", &general_information, violet_font,TOTAL_WIDTH / 2 ,ROW(2), 55, CENTERED);
-    text_t * continue_text = create_text("CONTINUE", &general_information, blue_font, TOTAL_WIDTH/2, ROW(5), 30, CENTERED);
-    text_t * restart_text = create_text("RESTART", &general_information, blue_font, TOTAL_WIDTH/2, ROW(7), 30, CENTERED);
-    text_t * menu_text = create_text("MENU", &general_information, blue_font, TOTAL_WIDTH/2, ROW(9), 30, CENTERED);
-    text_t * quit_text = create_text("QUIT GAME", &general_information, blue_font, TOTAL_WIDTH/2, ROW(11), 30, CENTERED);    
+    text_t * pause_text = create_text("PAUSA",  violet_font,TOTAL_WIDTH / 2 ,ROW(2), 55, CENTERED);
+    text_t * continue_text = create_text("CONTINUE", blue_font, TOTAL_WIDTH/2, ROW(5), 30, CENTERED);
+    text_t * restart_text = create_text("RESTART",  blue_font, TOTAL_WIDTH/2, ROW(7), 30, CENTERED);
+    text_t * menu_text = create_text("MENU",  blue_font, TOTAL_WIDTH/2, ROW(9), 30, CENTERED);
+    text_t * quit_text = create_text("QUIT GAME",  blue_font, TOTAL_WIDTH/2, ROW(11), 30, CENTERED);    
     
     draw_text(continue_text);
     draw_text(restart_text);
@@ -23,6 +24,9 @@ int pause(void){
     ALLEGRO_EVENT event_capture;
     al_flip_display();
     int return_value = 0;
+    int selected = 0;
+    int counter = 0;
+    short int selected_change = 0;
     while (!return_value){
     // Leemos todos los eventos de la lista de espera
     al_wait_for_event(general_information.queue, &event_capture);
@@ -30,7 +34,7 @@ int pause(void){
         switch (event_capture.type){
                     // En el caso de que hayamos hecho click, debemos ver si fue en alguno de los textos.
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:{
-                printf("Click on Pause\n");
+                
                 if (text_was_selected(menu_text, event_capture.mouse.x, event_capture.mouse.y)){
                     return_value = MENU;
                 } else if (text_was_selected(continue_text, event_capture.mouse.x, event_capture.mouse.y)){
@@ -43,10 +47,48 @@ int pause(void){
                         
                 break;
             }
-            default:{
-                break;
+            case ALLEGRO_EVENT_TIMER:{
+                counter++;
+                if (counter == 5 || selected_change){
+                    twinkle(4, selected,blue_font, violet_font , continue_text, restart_text, menu_text, quit_text);
+                    counter = 0;
+                    selected_change = 0;
+                    al_flip_display();
+                }
+
+                break;                
             }
-                    
+            case ALLEGRO_EVENT_KEY_DOWN:{
+                switch (event_capture.keyboard.keycode){
+                    case ALLEGRO_KEY_ENTER:{
+                        if (selected == 0){
+                            return_value = CONTINUE;
+                        } else if (selected == 1){
+                            return_value = RESTART;
+                        } else if (selected == 2){
+                            return_value = MENU;
+                        } else if (selected == 3){
+                            return_value = QUIT;
+                        }
+                        break;
+                    }
+                    case ALLEGRO_KEY_DOWN:{
+                        selected = selected < 3 ? selected + 1: selected;
+                        selected_change = 1;
+                        break;
+                    }
+                    case ALLEGRO_KEY_UP:{
+                        selected = selected > 0 ? selected - 1: selected;
+                        selected_change = 1;
+                        break;
+                    }
+                }
+                break;
+            } 
+            case ALLEGRO_EVENT_DISPLAY_CLOSE:{
+                return_value = QUIT;
+                break;
+            }       
         }
     }
 

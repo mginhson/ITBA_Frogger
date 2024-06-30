@@ -4,7 +4,7 @@
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 #include <allegro5/allegro_primitives.h>
-
+#include "../config.h"
 g_info_t general_information;
 // Funcion que incializa allegro
 void *init_allegro(void){
@@ -31,23 +31,23 @@ void *init_allegro(void){
     // Registramos los eventos de teclado, display y timer
     al_register_event_source(queue, al_get_keyboard_event_source());
     al_register_event_source(queue, al_get_display_event_source(disp));
-    //al_register_event_source(queue, al_get_timer_event_source(timer));
+    al_register_event_source(queue, al_get_timer_event_source(timer));
     al_register_event_source(queue, al_get_mouse_event_source());
     // Guardamos la información en una variable global
     // Al crear una instancia de g_info_t, automaticamente se crea un ALLEGRO_EVENT
-    g_info_t * g_info = &general_information;
+    //g_info_t * g_info = &general_information;
     
-    g_info->timer = timer;
-    g_info->queue = queue;
-    g_info->disp = disp;
+    general_information.timer = timer;
+    general_information.queue = queue;
+    general_information.disp = disp;
     // Empieza a correr el timer
-    al_start_timer(g_info->timer);
-    g_info->bitmap =  al_load_bitmap("assets.png");
-    if ((g_info->bitmap) == NULL){
+    al_start_timer(general_information.timer);
+    general_information.bitmap =  al_load_bitmap("assets.png");
+    if ((general_information.bitmap) == NULL){
         return NULL;
     }
     
-    return g_info;
+    return NULL;
 }
 // Funcion que cierra allegro
 void destroy_allegro(void){

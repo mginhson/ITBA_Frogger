@@ -1,6 +1,7 @@
 #include "assets.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "../config.h"
 // Funcion que carga la información para acceder a los assets de las ranas
 assets_t * get_frog_assets(void){
     assets_t * assets = (assets_t *) malloc(sizeof(assets_t) * FROG_ASSETS_X * FROG_ASSETS_Y);

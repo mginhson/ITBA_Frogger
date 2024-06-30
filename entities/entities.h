@@ -26,7 +26,7 @@ typedef struct{
 
 
 typedef struct{
-
+    
     const object_graphics_t graphics;
     const object_attributes_t attr;
     const uint32_t hitbox_width; //From left side, should correspond with graphics width!!!
