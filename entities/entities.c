@@ -8,21 +8,42 @@ const object_kind_t empty_object={
     .hitbox_width = 0,
 };
 
+
 const object_kind_t bus_object_kind = {
     .hitbox_width=10,
     .attr = {.canKill = 1, .isEquippable = 0},
+    .hitbox_width=1,
+    .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
+};
+
+const object_kind_t car_object_kind = {
+    .hitbox_width=1,
+    .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
 };
 
 const object_kind_t small_log_object_kind={
-    
+    .hitbox_width=1,
+    .attr = {.canKill = 0, .isEquippable = 0, .canMove = 1},
 };
 
 const object_kind_t normal_log_object_kind = {
-
+    .hitbox_width=1,
+    .attr = {.canKill = 0, .isEquippable = 0, .canMove = 1},
 };
 
 const object_kind_t big_log_object_kind = {
+    .hitbox_width=1,
+    .attr = {.canKill = 0, .isEquippable = 0, .canMove = 1},
+};
 
+const object_kind_t snake_object_kind = {
+    .hitbox_width=1,
+    .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
+};
+
+const object_kind_t lylypad_object_kind = {
+    .hitbox_width=1,
+    .attr = {.canKill = 0, .isEquippable = 0, .canMove = 0},
 };
 
 
@@ -36,24 +57,164 @@ const object_kind_t big_log_object_kind = {
             .background = road,
             .objects =
             {
-                {.position=0},
-                {.position=LANE_X_PIXELS/2},
-            }
-            
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.4,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.8,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [4]={.doesExist=0}
+            } 
         },
-         
+        [1]=
+        {
+            .direction = RIGHT,
+            .kind = &car_object_kind,
+            .background = road,
+            .objects =
+            {
+                [0]={.position=LANE_X_PIXELS*0.2,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.4,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.8,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.2,.doesExist=1},
+                [4]={.position=LANE_X_PIXELS*1.5,.doesExist=1}
+            } 
+        },
+        [2]=
+        {
+            .direction = LEFT,
+            .kind = &car_object_kind,
+            .background = road,
+            .objects =
+            {
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.5,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.8,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [4]={.doesExist=0}
+            } 
+        },
+        [3]=
+        {
+            .direction = LEFT,
+            .kind = &bus_object_kind,
+            .background = road,
+            .objects =
+            {
+                [0]={.position=LANE_X_PIXELS*0.2,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.4,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.6,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [4]={.position=LANE_X_PIXELS*1.8,.doesExist=1}
+            } 
+        },
+        [4]=
+        {
+            .direction = RIGHT,
+            .kind = &car_object_kind,
+            .background = road,
+            .objects =
+            {
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.3,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.7,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [4]={.doesExist=0}
+            } 
+        },
+        [5]=
+        {
+            .direction = LEFT,
+            .kind = &bus_object_kind,
+            .background = road,
+            .objects =
+            {
+                [0]={.position=LANE_X_PIXELS*0.3,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.7,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [3]={.doesExist=0},
+                [4]={.doesExist=0}
+            } 
+        },
     };
 
     static const lane_t water_arquetypes[] = {
         [0] = 
         {
+            .direction = LEFT,
             .background = water,
             .kind = &normal_log_object_kind,
             .objects = {
-                [0]={.doesExist=1,.position=0},
+                [0]={.position=LANE_X_PIXELS*0.1,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.4,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.75,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [4]={.doesExist=0}
             }
-
         },
+        [1] = 
+        {
+            .direction = LEFT,
+            .background = water,
+            .kind = &big_log_object_kind,
+            .objects = {
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.4,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.6,.doesExist=1},
+                [3]={.doesExist=0},
+                [4]={.doesExist=0}
+            }
+        },
+        [2] = 
+        {
+            .direction = LEFT,
+            .background = water,
+            .kind = &small_log_object_kind,
+            .objects = {
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.2,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.5,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*0.8,.doesExist=1},
+                [4]={.position=LANE_X_PIXELS*1.6,.doesExist=1}
+            }
+        },
+        [3] = 
+        {
+            .direction = RIGHT,
+            .background = water,
+            .kind = &small_log_object_kind,
+            .objects = {
+                [0]={.position=LANE_X_PIXELS*0.3,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.5,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.9,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [4]={.doesExist=0}
+            }
+        },
+        [4] = 
+        {
+            .direction = RIGHT,
+            .background = water,
+            .kind = &normal_log_object_kind,
+            .objects = {
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.25,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.5,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*0.9,.doesExist=1},
+                [4]={.position=LANE_X_PIXELS*1.8,.doesExist=1}
+            }
+        },
+        [5] = 
+        {
+            .direction = RIGHT,
+            .background = water,
+            .kind = &big_log_object_kind,
+            .objects = {
+                [0]={.position=LANE_X_PIXELS*0.25,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.4,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.8,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*1.6,.doesExist=1},
+                [4]={.doesExist=0}
+            }
+        }
     };
 
     static const lane_t grass_arquetypes[] = 
@@ -61,11 +222,27 @@ const object_kind_t big_log_object_kind = {
         [0] = 
         {
             .background = grass,
-            .kind = &bus_object_kind, //no enemies
-            .direction = RIGHT,
-            .objects = {{0,.doesExist=1},{1,.doesExist=1},{2,.doesExist=1},{3,.doesExist=1},{4,.doesExist=1}},
-
-        }
+            .kind = &empty_object, //no enemies
+            .objects = {
+                [0]={.doesExist=0},
+                [1]={.doesExist=0},
+                [2]={.doesExist=0},
+                [3]={.doesExist=0},
+                [4]={.doesExist=0}
+            }
+        },
+        [1] = 
+        {
+            .background = grass,
+            .kind = &snake_object_kind,
+            .objects = {
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.5,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*1.5,.doesExist=1},
+                [3]={.doesExist=0},
+                [4]={.doesExist=0}
+            }
+        },
     };
 
 
@@ -74,8 +251,14 @@ const object_kind_t big_log_object_kind = {
         [0] = 
         {
             .background = finish_line,
-            .kind = NULL,
-            
+            .kind = &lylypad_object_kind,
+            .objects = {
+                [0]={.position=0,.doesExist=1},
+                [1]={.position=LANE_X_PIXELS*0.2,.doesExist=1},
+                [2]={.position=LANE_X_PIXELS*0.4,.doesExist=1},
+                [3]={.position=LANE_X_PIXELS*0.6,.doesExist=1},
+                [4]={.position=LANE_X_PIXELS*0.8,.doesExist=1}
+            }   
         }
     };
 //________________________________________________________________
@@ -140,7 +323,7 @@ int32_t fillMap(map_t *_map, uint32_t _level)
             case 14:
                 _map->lanes[i] = road_arquetypes[rand() % road_arquetypes_elements];
                 break;
-            case LANES_COUNT-1:
+            case 15:
                 _map->lanes[i] = grass_arquetypes[rand() % grass_arquetypes_elements];
                 break;
 
