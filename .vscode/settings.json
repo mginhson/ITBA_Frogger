@@ -15,6 +15,7 @@
         "entities.h": "c",
         "objects.h": "c",
         "stdarg.h": "c",
-        "input.h": "c"
+        "input.h": "c",
+        "game_logic.h": "c",
     }
 }

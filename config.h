@@ -27,8 +27,8 @@
     #define MS_RANITA_MOVEMENT_COOLDOWN 100
 
 #elif defined(RPI)
-    #define LANE_X_PIXELS 16
-    #define LANE_Y_PIXELS 12
+    #define LANE_X_PIXELS 12
+    #define LANE_Y_PIXELS 16
     #define MS_RANITA_MOVEMENT_COOLDOWN 100
 
 #else
