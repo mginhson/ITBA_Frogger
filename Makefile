@@ -52,4 +52,4 @@ renderWorld.o: driv/disdrv.h driv/formas.h mundo/renderWorld.h mundo/renderWorld
 	gcc -Wall -c mundo/renderWorld.c
 
 clean:
-	rm -r ${MODULES} ${EXEC_NAME} *.o
+	rm ${MODULES} ${EXEC_NAME} *.o
