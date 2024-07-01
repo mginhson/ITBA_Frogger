@@ -31,6 +31,7 @@ typedef struct{
     const object_attributes_t attr;
     const uint32_t hitbox_width; //From left side, should correspond with graphics width!!!
     //On dependant objects, hitbox_height is the same as the LANE_HEIGHT
+    const uint32_t internal_timer_limit;
 }object_kind_t;
 
 
