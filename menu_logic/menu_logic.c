@@ -1,19 +1,22 @@
 #include <stdio.h>
+#include "menu_logic.h"
+#include "../menus/menu.h"
+#include "../menus/top.h"
+#include "../menus/pause.h"
 
 void menu_1 (int option){
     
-    enum options_principal {START = 1, TOP, END};      //Wainer y Sosa hacen el enum y yo lo incluyo (en menu.h)
-    
     switch (option){
         case START:
-            start_game_logic ();
+            while(1)
+            {   
+                gameTick(10);
+                usleep(100000);
+            }
             break;
         case TOP:
-            show_scores ();
-            int back = top_going_back();
-            if (back){
-                open_menu_1;
-            }
+            topTen ();
+            open_menu_1 ();
             break;
         case END:
             end_game();
@@ -25,10 +28,8 @@ void menu_1 (int option){
 
 void menu_2 (int option){
     
-    enum options_secundario {RESUME = 1, RESTART, QUIT};     // Wainer y Sosa hacen el enum y yo lo incluyo
-    
     switch (option){
-        case RESUME:
+        case CONTINUE:
             resume_game_logic ();
             break;
         case RESTART:
@@ -43,8 +44,7 @@ void menu_2 (int option){
 
 
 void open_menu_1 (void){
-    show_menu_1; // Funcion de Wainer y Sosa que abre el menu principal
-    int option = menu; // Funcion de Wainer y Sosa que me entrega que se oprime en el menu principal
+    int option = menu(); // Funcion de Wainer y Sosa que me entrega que se oprime en el menu principal
     
     if (option){                    // Si recibo una opcion != 0 (osea que se oprimio una opcion)
         menu_1 (option);
@@ -53,8 +53,7 @@ void open_menu_1 (void){
 
 
 void open_menu_2 (void){
-    show_menu_2;    // Funcion de Wainer y Sosa que abre el menu de pausa
-    int option = pause;     // Funcion de Wainer y Sosa que me entrega que se oprime en el menu de pausa
+    int option = pause ();     // Funcion de Wainer y Sosa que me entrega que se oprime en el menu de pausa
 
     if (option){            // Si recibo una opcion != 0 (osea que se oprimio una opcion)
         menu_2 (option);
