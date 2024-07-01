@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "game/game_logic.h"
-#include <unistd.h>
-#include "allegro/init.h"
+#include <time.h>
+
 int main(int argc, char **argv)
 {
     puts("frogger");
-    initializeGameLogic();
-    init_allegro();
-    while (1){
-
-        gameTick(100);
-        usleep(10000);
+    initializeGameLogic();   
+    while(1)
+    {
+        gameTick(10);
+        usleep(100000);
     }
+    return 0;
 }
-
