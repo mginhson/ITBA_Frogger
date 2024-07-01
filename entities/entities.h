@@ -38,6 +38,8 @@ typedef struct{
     int32_t position;
     animation_t animation;
     uint32_t doesExist :1;
+    uint32_t internal_timer;
+    uint8_t state;
 }object_t;
 
 typedef struct{
@@ -73,12 +75,13 @@ typedef struct{
 
 extern const object_kind_t bus_object_kind;
 extern const object_kind_t empty_object;
-extern const object_kind_t car_object_kind;
+extern const object_kind_t car_object_kind_v1;
+extern const object_kind_t car_object_kind_v2;
 extern const object_kind_t small_log_object_kind;
 extern const object_kind_t normal_log_object_kind;
 extern const object_kind_t big_log_object_kind;
 extern const object_kind_t snake_object_kind;
-extern const object_kind_t lilypad_object_kind;
+extern const object_kind_t final_frog_object_kind;
 
 
 int32_t fillMap(map_t *_map,uint32_t _level);

@@ -31,8 +31,26 @@ static void draw_lane_objects(lane_t *lane, int row){
         return;
     }
     for (i = MAX_OBJECTS_PER_LANE - 1; i >= 0 ; i--){
+
         if ((lane->objects)[i].doesExist){
-            draw_car(lane->direction, lane->objects[i].position, ROW(row));
+            float x = lane->objects[i].position;
+            float y = ROW(row);
+            if (lane->kind == &bus_object_kind){
+                draw_bus(lane->direction, x, y);
+            } else if (lane->kind == &car_object_kind_v1){
+                draw_car_v1(lane->direction, x, y);
+            } else if (lane->kind == &car_object_kind_v2){
+                draw_car_v2(lane->kind, x, y);
+            } else if (lane->kind == &small_log_object_kind){
+                draw_log(1, x, y);
+            } else if (lane->kind == &normal_log_object_kind){
+                draw_log(2, x, y);
+            } else if (lane->kind == &big_log_object_kind){
+                draw_log(3, x, y);
+            } else if (lane->kind == &snake_object_kind){
+                draw_snake(x, y);
+            } 
+            
         } 
     }
 }

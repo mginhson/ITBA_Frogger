@@ -16,7 +16,11 @@ const object_kind_t bus_object_kind = {
     .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
 };
 
-const object_kind_t car_object_kind = {
+const object_kind_t car_object_kind_v1 = {
+    .hitbox_width=1,
+    .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
+};
+const object_kind_t car_object_kind_v2 = {
     .hitbox_width=1,
     .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
 };
@@ -41,7 +45,7 @@ const object_kind_t snake_object_kind = {
     .attr = {.canKill = 1, .isEquippable = 0, .canMove = 1},
 };
 
-const object_kind_t lilypad_object_kind = {
+const object_kind_t final_frog_object_kind = {
     .hitbox_width=1,
     .attr = {.canKill = 0, .isEquippable = 0, .canMove = 0},
 };
@@ -67,7 +71,7 @@ const object_kind_t lilypad_object_kind = {
         [1]=
         {
             .direction = RIGHT,
-            .kind = &car_object_kind,
+            .kind = &car_object_kind_v1,
             .background = road,
             .objects =
             {
@@ -81,7 +85,7 @@ const object_kind_t lilypad_object_kind = {
         [2]=
         {
             .direction = LEFT,
-            .kind = &car_object_kind,
+            .kind = &car_object_kind_v2,
             .background = road,
             .objects =
             {
@@ -109,7 +113,7 @@ const object_kind_t lilypad_object_kind = {
         [4]=
         {
             .direction = RIGHT,
-            .kind = &car_object_kind,
+            .kind = &car_object_kind_v1,
             .background = road,
             .objects =
             {
