@@ -5,6 +5,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include "../config.h"
+#include "components/objects.h"
 static void draw_lane(lane_t* lane, int row);
 static void draw_lane_background(lane_t * lane, int row);
 static void draw_lane_objects(lane_t * lane, int row);
@@ -13,8 +14,9 @@ static void draw_lane_objects(lane_t * lane, int row);
 
 void renderWorld(map_t *map, independent_object_t* frog[], int size, int tiempo){
     int i;
+    al_clear_to_color(al_map_rgb(0, 0, 0));
     for (i=0; i < LANES_COUNT; i++){
-        draw_lane(&((map->lanes)[i]), i);
+        draw_lane(&map->lanes[i], i);
     }
     al_flip_display();
 }
@@ -25,8 +27,29 @@ static void draw_lane(lane_t * lane, int row){
 static void draw_lane_objects(lane_t *lane, int row){
     // Accedo a los objetos de lane y los renderizo
     int i;
-    for (i = 0; i < MAX_OBJECTS_PER_LANE; i++){
+    if (lane->kind == &empty_object || lane->kind == NULL){
+        return;
+    }
+    for (i = MAX_OBJECTS_PER_LANE - 1; i >= 0 ; i--){
+
         if ((lane->objects)[i].doesExist){
+            float x = lane->objects[i].position;
+            float y = ROW(row);
+            if (lane->kind == &bus_object_kind){
+                draw_bus(lane->direction, x, y);
+            } else if (lane->kind == &car_object_kind_v1){
+                draw_car_v1(lane->direction, x, y);
+            } else if (lane->kind == &car_object_kind_v2){
+                draw_car_v2(lane->kind, x, y);
+            } else if (lane->kind == &small_log_object_kind){
+                draw_log(1, x, y);
+            } else if (lane->kind == &normal_log_object_kind){
+                draw_log(2, x, y);
+            } else if (lane->kind == &big_log_object_kind){
+                draw_log(3, x, y);
+            } else if (lane->kind == &snake_object_kind){
+                draw_snake(x, y);
+            } 
             
         } 
     }
@@ -35,11 +58,11 @@ static void draw_lane_background(lane_t * lane, int row){
     // Dibujamos el fondo dependiendo del fondo
     switch (lane->background){
         case water:{
-            al_draw_rectangle(0, ROW(row), TOTAL_WIDTH, ROW(row+1), RIVER_COLOR, 0);
+            al_draw_filled_rectangle(0, ROW(row), TOTAL_WIDTH, ROW(row + 1), RIVER_COLOR);
             break;
         }
         case road: { 
-            al_draw_rectangle(0, ROW(row), TOTAL_WIDTH, ROW(row + 1), STREET_COLOR, 0);
+            al_draw_filled_rectangle(0, ROW(row), TOTAL_WIDTH, ROW(row + 1), STREET_COLOR);
             break;
         }
         case grass: {
@@ -47,6 +70,7 @@ static void draw_lane_background(lane_t * lane, int row){
             break;
         }
         case finish_line:{
+            al_draw_filled_rectangle(0, ROW(row), TOTAL_WIDTH, ROW(row + 1), RIVER_COLOR);
             draw_finish_line((get_wall_assets()));
             break;
         }

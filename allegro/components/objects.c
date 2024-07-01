@@ -6,8 +6,8 @@
 
 void draw_car(char direction, float dx, float dy){
     assets_t * cars_collection = get_cars_assets();
-    int random = rand() % 2;
-    random = (direction == 'r' ? random + 2 : random); 
+    int random;
+    random = (direction == 1 ? car3r : car1l); 
     float sx = cars_collection[random].sx;
     float sy = cars_collection[random].sy;
     float sw = cars_collection[random].sw;
