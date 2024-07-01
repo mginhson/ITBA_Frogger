@@ -537,8 +537,8 @@ int32_t fillMap(map_t *_map, uint32_t _level)
             case 12:
             case 13:
             case 14:
-                //_map->lanes[i] = road_arquetypes[rand() % road_arquetypes_elements];
-                _map->lanes[i] = road_arquetypes[0];
+                _map->lanes[i] = road_arquetypes[rand() % road_arquetypes_elements];
+                
                 break;
             case 15:
                 _map->lanes[i] = grass_arquetypes[rand() % grass_arquetypes_elements];
@@ -551,10 +551,10 @@ int32_t fillMap(map_t *_map, uint32_t _level)
                 _map->lanes[i] = grass_arquetypes[rand() % grass_arquetypes_elements];
                 break;
         }
-        _map->lanes[i].virtual_lane_start = -LANE_X_PIXELS;
+        _map->lanes[i].virtual_lane_start = 0;
         _map->lanes[i].ms_to_next= 10;
         _map->lanes[i].ms_reload = 200;
-        _map->lanes[i].virtual_lane_end =2*LANE_X_PIXELS; //CAMBIAR ESTO, DEBERIA SER CONST Y PREDEFINIDO EN PATRON
+        _map->lanes[i].virtual_lane_end =LANE_X_PIXELS; //CAMBIAR ESTO, DEBERIA SER CONST Y PREDEFINIDO EN PATRON
     }
     //printMap(_map);
     return 0;

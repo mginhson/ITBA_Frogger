@@ -1,6 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
-
+#include <stdint.h>
 #define SHORT_SIZE 8
 #define NORMAL_SIZE 16
 #define BIG_SIZE 32
@@ -23,7 +23,7 @@
 
 #if defined(PC)
     #define LANE_X_PIXELS (TOTAL_WIDTH)
-    #define LANE_Y_PIXELS (TOTAL_HEIGHT)
+    #define LANE_Y_PIXELS ((int32_t)REZISE(NORMAL_SIZE * LANES_COUNT))
     #define MS_RANITA_MOVEMENT_COOLDOWN 100
 
 #elif defined(RPI)

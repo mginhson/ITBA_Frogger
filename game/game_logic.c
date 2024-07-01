@@ -71,9 +71,9 @@ void gameTick(int32_t ms_since_last_tick)
     
     for(i=0; i < lane_bound; i++)
     {
-        int32_t a = map.lanes[i].ms_to_next;
-        map.lanes[i].ms_to_next = a - ms_since_last_tick;
-        //map.lanes[i].ms_to_next = map.lanes[i].ms_to_next - ms_since_last_tick;
+        //int32_t a = map.lanes[i].ms_to_next;
+        //map.lanes[i].ms_to_next = a - ms_since_last_tick;
+        map.lanes[i].ms_to_next = map.lanes[i].ms_to_next - ms_since_last_tick;
         //printf("map.lanes[%d].ms_to_next = %d\n",i,map.lanes[i].ms_to_next);
         
         
@@ -119,7 +119,7 @@ void gameTick(int32_t ms_since_last_tick)
                 else //map.lanes[i].direction == LEFT
                 {
                     
-                    map.lanes[i].objects->position -= 1;
+                    map.lanes[i].objects[j].position -= 1;
                     
                     start_object_x = map.lanes[i].objects[j].position;
                     
@@ -160,6 +160,8 @@ void gameTick(int32_t ms_since_last_tick)
             
         }
     }
+    printMap(&map, 0);
+    printf("\n%d\n", LANE_PIXEL_HEIGHT);
     renderWorld(&map, &ranita, 1, 64);
 }
 
