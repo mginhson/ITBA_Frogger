@@ -66,7 +66,7 @@ void writing_top (char* str, int ptj){
         for (i=0; i<10; i++){
             int cont=0;
             int num_aux = topscores [i];
-            for (j=0; num_aux>0; j++){
+            for (j=0; num_aux>=0; j++){
                 arr_alpha [j] = (num_aux%10);
                 num_aux /= 10;
                 cont++;
@@ -87,6 +87,11 @@ void writing_top (char* str, int ptj){
                     arr_topscores [i][0] = '0';
                     arr_topscores [i][1] = '0';
                     arr_topscores [i][2] = arr_alpha[0] + '0';
+                    break;
+                case 0:
+                    arr_topscores [i][0] = '0';
+                    arr_topscores [i][1] = '0';
+                    arr_topscores [i][2] = '0';
                     break;
             }
         }
