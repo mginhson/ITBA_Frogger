@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "high_scores.h"
+#include "High_scores.h"
 
 void writing_top (char* str, int ptj){
     FILE* pfile;

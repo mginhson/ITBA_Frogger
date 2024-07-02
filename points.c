@@ -8,6 +8,7 @@ void logic_pts (){
     int fly = frog_catch_fly ();
     int extra_frog = frog_cactch_extra_frog ();
     int new_level = frog_passes_level ();
+    int new_game = new_game_starts ();
     if (forward){
         pts++;
     }
@@ -28,5 +29,8 @@ void logic_pts (){
     }
     if (new_level){
         pts += 25;
+    }
+    if (new_game){
+        pts = 0;
     }
 }
